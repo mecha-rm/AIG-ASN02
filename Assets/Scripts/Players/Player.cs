@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // player class for the game.
-public class Player : MonoBehaviour
+public abstract class Player : MonoBehaviour
 {
     // the symbol used by the player
-    public symbol plyrSymbol;
+    public symbol playerSymbol;
+
+    // the gameplay manager.
+    public GameplayManager manager;
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
-        
+        // finds the gameplay manager if not in the scene.
+        if (manager == null)
+            manager = FindObjectOfType<GameplayManager>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    // gets the chosen index from the player.
+    public abstract BoardIndex GetChosenIndex();
 }

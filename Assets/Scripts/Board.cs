@@ -131,6 +131,19 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    // checks if a board index is available.
+    public bool IsBoardIndexAvailable(BoardIndex index)
+    {
+        // BoardIndex checkedIndex = board.
+        foreach(BoardIndex boardIndex in board)
+        {
+            if (boardIndex == index)
+                return boardIndex.indexSymbol == symbol.none;
+        }
+
+        return false;
+    }
+
     // sets a board index on the actual space.
     public bool SetBoardIndex(int row, int col, symbol sym, bool overwrite = false)
     {
