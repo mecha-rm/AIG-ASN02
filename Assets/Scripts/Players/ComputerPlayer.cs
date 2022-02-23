@@ -21,17 +21,14 @@ public class ComputerPlayer : Player
         // gets the board.
         Board board = manager.board;
 
-        // chooses indexes from left to right.
-        for(int r = 0; r < board.board.GetLength(0); r++) // rows
+        // goes through each index.
+        for(int i = 0; i < board.boardList.Count; i++)
         {
-            for (int c = 0; c < board.board.GetLength(1); c++) // columns
-            {
-                // returns the index.
-                if (board.board[r, c].IsAvailable())
-                    return board.board[r, c];
-            }
-
+            // the index is available.
+            if (board.boardList[i].IsAvailable())
+                return board.boardList[i];
         }
+
 
         // no spots available.
         return null;

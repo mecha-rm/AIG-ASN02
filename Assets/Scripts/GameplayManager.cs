@@ -70,26 +70,32 @@ public class GameplayManager : MonoBehaviour
     void Update()
     {
         BoardIndex index;
-        index = (p1Turn) ? p1.GetChosenIndex() : p1.GetChosenIndex(); // TODO: change players.
+        index = (p1Turn) ? p1.GetChosenIndex() : p2.GetChosenIndex(); // TODO: change players.
 
         // tries to get the door component from the object.
         if (index != null)
         {
-            // the current symbol
-            symbol currSym = p1.playerSymbol;
-            index.SetIndexSymbol(currSym); // set to x for now.
-        
-            // checks if the board has a winner.
-            if(board.HasWinner(currSym))
+            // the index is available.
+            if(index.IsAvailable())
             {
-                // checks
-                Debug.Log("WIN");
+                // the current symbol
+                symbol currSym = (p1Turn) ? p1.playerSymbol : p2.playerSymbol;
+                index.SetIndexSymbol(currSym); // set to x for now.
+
+                // checks if the board has a winner.
+                if (board.HasWinner(currSym))
+                {
+                    // checks
+                    Debug.Log("WIN");
+                }
+                else if (board.IsFull()) // no winner, so check if the game is over.
+                {
+                    Debug.Log("Board Full.");
+                }
+
+                // change the turn.
+                p1Turn = !p1Turn;
             }
-            else if(board.IsFull()) // no winner, so check if the game is over.
-            {
-                Debug.Log("Board Full.");
-            }
-        
         }
 
         // // player has clicked on something.

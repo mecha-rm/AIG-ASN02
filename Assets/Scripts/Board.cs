@@ -5,9 +5,13 @@ using UnityEngine;
 // the board.
 public class Board : MonoBehaviour
 {
-    // hides hte board object.
+    // hides the board object.
     [HideInInspector()] // doesn't show up in the inspector anyway.
-    public BoardIndex[,] board;
+    public BoardIndex[,] boardArray;
+
+    // the board list.
+    [Tooltip("The board indexes in a single list format.")]
+    public List<BoardIndex> boardList = new List<BoardIndex>();
 
     // the x-sprite
     public Sprite xSprite;
@@ -19,21 +23,54 @@ public class Board : MonoBehaviour
     void Start()
     {
         // initialize board.
-        board = new BoardIndex[3, 3];
+        boardArray = new BoardIndex[3, 3];
 
         // grabs the indexes
+        // won't be listed in the proper order.
         BoardIndex[] indexes = FindObjectsOfType<BoardIndex>();
         
-        // checks for proper count.
-        if(indexes.Length == 9)
+        // if the board list has been filled.
+        if(boardList.Count == 9) // fills array based on list.
+        {
+            int row = 0, col = 0;
+
+            // goes through every index.
+            foreach(BoardIndex index in boardList)
+            {
+                // sets x-sprite if not preset.
+                if (index.xSprite == null)
+                    index.xSprite = xSprite;
+
+                // sets o-sprite if not pre-set.
+                if (index.oSprite == null)
+                    index.oSprite = oSprite;
+
+                boardArray[row, col] = index;
+
+                // increases column count.
+                col++;
+
+                // move onto next row.
+                if(col >= boardArray.GetLength(1))
+                {
+                    row++;
+                    col = 0;
+                }
+
+            }
+        }
+        else if(indexes.Length == 9) // checks for proper count, and fills list based on array.
         {
             // inex in the list.
             int index = 0;
 
+            // empties board list.
+            boardList = new List<BoardIndex>();
+
             // fills contents
-            for(int r = 0; r < board.GetLength(0); r++) // checks rows
+            for (int row = 0; row < boardArray.GetLength(0); row++) // checks rows
             {
-                for(int c = 0; c < board.GetLength(1); c++) // checks columns
+                for(int col = 0; col < boardArray.GetLength(1); col++) // checks columns
                 {
                     // sets x-sprite if not preset.
                     if (indexes[index].xSprite == null)
@@ -43,7 +80,9 @@ public class Board : MonoBehaviour
                     if (indexes[index].oSprite == null)
                         indexes[index].oSprite = oSprite;
 
-                    board[r, c] = indexes[index];
+                    boardArray[row, col] = indexes[index];
+                    boardList.Add(boardArray[row, col]);
+
                     index++;
                 }
             }
@@ -53,18 +92,19 @@ public class Board : MonoBehaviour
             Debug.LogError("Could not find 9 indexes in the scene.");
         }
 
+        Debug.Log("Done");
     }
 
     // checks if the game is over.
     public bool IsFull()
     {
         // goes through each index.
-        for(int r = 0; r < board.GetLength(0); r++)
+        for(int r = 0; r < boardArray.GetLength(0); r++)
         {
-            for(int c = 0; c < board.GetLength(1); c++)
+            for(int c = 0; c < boardArray.GetLength(1); c++)
             {
                 // open space available.
-                if(board[r, c].indexSymbol == symbol.none)
+                if(boardArray[r, c].indexSymbol == symbol.none)
                 {
                     return false;
                 }
@@ -79,50 +119,50 @@ public class Board : MonoBehaviour
     {
         // ROWS
         // row 0
-        if(board[0, 0].indexSymbol == sym && board[0, 1].indexSymbol == sym && board[0, 2].indexSymbol == sym)
+        if(boardArray[0, 0].indexSymbol == sym && boardArray[0, 1].indexSymbol == sym && boardArray[0, 2].indexSymbol == sym)
         {
             return true;
         }
 
         // row 1
-        if (board[1, 0].indexSymbol == sym && board[1, 1].indexSymbol == sym && board[1, 2].indexSymbol == sym)
+        if (boardArray[1, 0].indexSymbol == sym && boardArray[1, 1].indexSymbol == sym && boardArray[1, 2].indexSymbol == sym)
         {
             return true;
         }
 
         // row 2
-        if (board[2, 0].indexSymbol == sym && board[2, 1].indexSymbol == sym && board[2, 2].indexSymbol == sym)
+        if (boardArray[2, 0].indexSymbol == sym && boardArray[2, 1].indexSymbol == sym && boardArray[2, 2].indexSymbol == sym)
         {
             return true;
         }
 
         // COLUMNS
         // column 0
-        if (board[0, 0].indexSymbol == sym && board[1, 0].indexSymbol == sym && board[2, 0].indexSymbol == sym)
+        if (boardArray[0, 0].indexSymbol == sym && boardArray[1, 0].indexSymbol == sym && boardArray[2, 0].indexSymbol == sym)
         {
             return true;
         }
 
         // column 1
-        if (board[0, 1].indexSymbol == sym && board[1, 1].indexSymbol == sym && board[2, 1].indexSymbol == sym)
+        if (boardArray[0, 1].indexSymbol == sym && boardArray[1, 1].indexSymbol == sym && boardArray[2, 1].indexSymbol == sym)
         {
             return true;
         }
 
         // column 2
-        if (board[0, 2].indexSymbol == sym && board[1, 2].indexSymbol == sym && board[2, 2].indexSymbol == sym)
+        if (boardArray[0, 2].indexSymbol == sym && boardArray[1, 2].indexSymbol == sym && boardArray[2, 2].indexSymbol == sym)
         {
             return true;
         }
 
         // DIAGONALS
-        if (board[0, 0].indexSymbol == sym && board[1, 1].indexSymbol == sym && board[2, 2].indexSymbol == sym)
+        if (boardArray[0, 0].indexSymbol == sym && boardArray[1, 1].indexSymbol == sym && boardArray[2, 2].indexSymbol == sym)
         {
             return true;
         }
 
         // column 1
-        if (board[2, 1].indexSymbol == sym && board[1, 1].indexSymbol == sym && board[0, 2].indexSymbol == sym)
+        if (boardArray[2, 1].indexSymbol == sym && boardArray[1, 1].indexSymbol == sym && boardArray[0, 2].indexSymbol == sym)
         {
             return true;
         }
@@ -135,7 +175,7 @@ public class Board : MonoBehaviour
     public bool IsBoardIndexAvailable(BoardIndex index)
     {
         // BoardIndex checkedIndex = board.
-        foreach(BoardIndex boardIndex in board)
+        foreach(BoardIndex boardIndex in boardArray)
         {
             if (boardIndex == index)
                 return boardIndex.indexSymbol == symbol.none;
@@ -144,21 +184,41 @@ public class Board : MonoBehaviour
         return false;
     }
 
-    // sets a board index on the actual space.
-    public bool SetBoardIndex(int row, int col, symbol sym, bool overwrite = false)
+    // gets the board index.
+    public BoardIndex GetBoardArrayIndex(int row, int col)
     {
         // out of bounds.
-        if (row > 2 || row < 0 || col > 2 || col < 0)
+        if (row < 0 || row >= boardArray.GetLength(0) || col < 0 || col >= boardArray.GetLength(1))
+            return null;
+
+        // returns the board value.
+        return boardArray[row, col];
+    }
+
+    // gets the board index from the board list.
+    public BoardIndex GetBoardListIndex(int index)
+    {
+        if (index > 0 || index < boardList.Count)
+            return boardList[index];
+        else
+            return null;
+    }
+
+    // sets a board index on the actual space.
+    public bool SetBoardArrayIndexSymbol(int row, int col, symbol sym, bool overwrite = false)
+    {
+        // out of bounds.
+        if (row < 0 || row >= boardArray.GetLength(0) || col < 0|| col >= boardArray.GetLength(1))
             return false;
 
         // nothing set.
-        if (board[row, col] == null)
+        if (boardArray[row, col] == null)
             return false;
 
         // changes symbol.
-        if(board[row, col].indexSymbol != symbol.none || overwrite == true)
+        if(boardArray[row, col].indexSymbol != symbol.none || overwrite == true)
         {
-            board[row, col].SetIndexSymbol(sym);
+            boardArray[row, col].SetIndexSymbol(sym);
             return true;
         }
 
@@ -166,46 +226,21 @@ public class Board : MonoBehaviour
         return false;
     }
 
-    // sets a board index on a [1 - 9] scale.
-    public bool SetBoardIndex(int space, symbol sym, bool overwrite = false)
+    // sets the index of the board list.
+    public bool SetBoardListIndexSymbol(int index, symbol sym, bool overwrite = false)
     {
-        // checks if board index set successful.
-        bool success = false;
+        // bounds check.
+        if (index < 0 || index >= boardList.Count)
+            return false;
 
-        // TODO: optimize this setup.
-        switch (space)
+        // checks if change allowed.
+        if (boardList[index].indexSymbol != symbol.none || overwrite == true)
         {
-            case 0: // top left
-            case 1:
-                success = SetBoardIndex(0, 0, sym, overwrite);
-                break;
-            case 2: // top middle
-                success = SetBoardIndex(0, 1, sym, overwrite);
-                break;
-            case 3: // top right
-                success = SetBoardIndex(0, 2, sym, overwrite);
-                break;
-            case 4: // middle left
-                success = SetBoardIndex(1, 0, sym, overwrite);
-                break;
-            case 5: // middle middle
-                success = SetBoardIndex(1, 1, sym, overwrite);
-                break;
-            case 6: // middle right
-                success = SetBoardIndex(1, 2, sym, overwrite);
-                break;
-            case 7: // bottom left
-                success = SetBoardIndex(2, 0, sym, overwrite);
-                break;
-            case 8: // bottom middle
-                success = SetBoardIndex(2, 1, sym, overwrite);
-                break;
-            case 9: // bottom right
-                success = SetBoardIndex(2, 2, sym, overwrite);
-                break;
+            boardList[index].SetIndexSymbol(sym);
+            return true;
         }
 
-        return success;
+        return false;
     }
 
     // Update is called once per frame
