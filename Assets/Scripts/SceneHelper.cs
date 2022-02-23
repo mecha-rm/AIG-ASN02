@@ -50,20 +50,20 @@ public class SceneHelper : MonoBehaviour
     }
 
     // called to change the screen size.
-    public void ChangeScreenSize(int width, int height, FullScreenMode mode)
+    public static void ChangeScreenSize(int width, int height, FullScreenMode mode)
     {
         Screen.SetResolution(width, height, mode);
     }
 
     // called to change the screen size.
-    public void ChangeScreenSize(int width, int height, FullScreenMode mode, bool fullScreen)
+    public static void ChangeScreenSize(int width, int height, FullScreenMode mode, bool fullScreen)
     {
         ChangeScreenSize(width, height, mode);
         Screen.fullScreen = fullScreen;
     }
 
     // exits the game
-    public void ExitApplication()
+    public static void ExitApplication()
     {
         Application.Quit();
     }
