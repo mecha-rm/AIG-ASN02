@@ -243,6 +243,29 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    // hides the default board index sprites.
+    public void HideNumbers()
+    {
+        foreach (BoardIndex index in boardList)
+            index.HideNumber();
+    }
+
+    // show the default board index sprites.
+    public void ShowNumbers()
+    {
+        foreach (BoardIndex index in boardList)
+            index.ShowNumber();
+
+    }
+
+    // toggle the default board index sprite visibilities.
+    public void ToggleNumbers()
+    {
+        foreach (BoardIndex index in boardList)
+            index.ToggleNumber();
+
+    }
+
     // Update is called once per frame
     void Update()
     {

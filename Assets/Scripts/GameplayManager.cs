@@ -21,6 +21,13 @@ public class GameplayManager : MonoBehaviour
 
     public bool p1Turn = true; // if 'false', it's p2's turn.
 
+    // the list of the audio.
+    // [Header("Audio")]
+    // public AudioClip rulesBGM;
+    // public AudioClip roundBGM;
+    // public AudioClip winBGM;
+    // public AudioClip loseBGM;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -125,5 +132,10 @@ public class GameplayManager : MonoBehaviour
         //     }
         // 
         // }
+
+        // toggles the visibility of the number sprites.
+        if (Input.GetKeyDown(KeyCode.H))
+            board.ToggleNumbers();
+        
     }
 }
