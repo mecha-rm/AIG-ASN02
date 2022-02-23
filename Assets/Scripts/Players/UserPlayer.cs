@@ -40,6 +40,6 @@ public class UserPlayer : Player
     void Update()
     {
         // saves the clicked object. There's only one mouse.
-        clickedObject = manager.mouse.clickedObject;
+        clickedObject = manager.mouse.lastClickedObject;
     }
 }

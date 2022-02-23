@@ -2,20 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// mouse class for interacting with items in a 2D space.
-// this is an adaptation of a file I made for something else.
-// since this is a 2D camera, only orthographic camera functions are kept.
+/*
+ * Mouse class for mouse interactions with colliders in a 2D space.
+ * This is an adaptation of a file I made for other projects, which has had most 3D components of it removed or altered.
+ * I am likely still using some version of this class for other projects, some of which are likely to be group projects.
+ * As such, please be aware of similiarites btween this code in other programs I or my group members have/am working on.
+ * since this is a 2D camera, only orthographic camera functions are kept.
+ */
 
 public class Mouse2D : MonoBehaviour
 {
+    // the mouse key for mouse operations. The default is Keycode.Mouse0, which is the left mouse button.
+    public KeyCode mouseKey = KeyCode.Mouse0;
+
     // the world position of the mouse.
     public Vector3 mouseWorldPosition;
 
     // the object the mouse is hovering over.
+    [Tooltip("The object the cursor is hovering over.")]
     public GameObject hoveredObject = null;
 
-    // the object that has been clicked. This variable gets set to null when the mouse button is released.
-    public GameObject clickedObject = null;
+    // the object that has been clicked and held on.
+    // when the mouse button is released, this is set to null. This variable gets set to null when the mouse button is released.
+    [Tooltip("The object the cursor is being held on. Becomes null once the mouse button is released.")]
+    public GameObject heldObject = null;
+
+    // the last object that was clicked on. The next time someone clicks on something, this will be set to null.
+    [Tooltip("The object the cursor last clicked on.")]
+    public GameObject lastClickedObject = null;
 
     // Start is called before the first frame update
     void Start()
@@ -114,8 +128,12 @@ public class Mouse2D : MonoBehaviour
             hoveredObject = hitInfo.collider.gameObject;
 
             // left mouse button has been clicked, so save to clicked object as well.
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-                clickedObject = hitInfo.collider.gameObject;
+            if (Input.GetKeyDown(mouseKey))
+            {
+                heldObject = hitInfo.collider.gameObject; // save the held obect.
+                lastClickedObject = hitInfo.collider.gameObject; // saves the last clicked object.
+            }
+                
         }    
         else
         {
@@ -136,8 +154,11 @@ public class Mouse2D : MonoBehaviour
                 hoveredObject = rayHit2D.collider.gameObject;
 
                 // left mouse button has been clicked, so save to clicked object as well.
-                if (Input.GetKeyDown(KeyCode.Mouse0))
-                    clickedObject = rayHit2D.collider.gameObject;
+                if (Input.GetKeyDown(mouseKey))
+                {
+                    heldObject = rayHit2D.collider.gameObject; // saves the held obect.
+                    lastClickedObject = rayHit2D.collider.gameObject; // saves the last clicked object.
+                }
             }
             else
             {
@@ -147,8 +168,8 @@ public class Mouse2D : MonoBehaviour
         }
 
         // left mouse button released, so clear clicked object.
-        if (Input.GetKeyUp(KeyCode.Mouse0))
-            clickedObject = null;
+        if (Input.GetKeyUp(mouseKey))
+            heldObject = null;
 
     }
 }

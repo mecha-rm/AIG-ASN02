@@ -18,6 +18,22 @@ public class ComputerPlayer : Player
     // gets the chosen index from the computer player.
     public override BoardIndex GetChosenIndex()
     {
+        // gets the board.
+        Board board = manager.board;
+
+        // chooses indexes from left to right.
+        for(int r = 0; r < board.board.GetLength(0); r++) // rows
+        {
+            for (int c = 0; c < board.board.GetLength(1); c++) // columns
+            {
+                // returns the index.
+                if (board.board[r, c].IsAvailable())
+                    return board.board[r, c];
+            }
+
+        }
+
+        // no spots available.
         return null;
     }
 

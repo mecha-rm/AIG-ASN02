@@ -11,11 +11,15 @@ public class GameplayManager : MonoBehaviour
     // the board.
     public Board board;
 
+    // if the game is running, this is true.
+    public bool running;
+
     // the two players.
     [Header("Players")]
     public Player p1;
     public Player p2;
 
+    public bool p1Turn = true; // if 'false', it's p2's turn.
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +70,7 @@ public class GameplayManager : MonoBehaviour
     void Update()
     {
         BoardIndex index;
-        index = p1.GetChosenIndex(); // TODO: change players
+        index = (p1Turn) ? p1.GetChosenIndex() : p1.GetChosenIndex(); // TODO: change players.
 
         // tries to get the door component from the object.
         if (index != null)

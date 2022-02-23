@@ -31,9 +31,9 @@ public class Board : MonoBehaviour
             int index = 0;
 
             // fills contents
-            for(int r = 0; r < 3; r++) // checks rows
+            for(int r = 0; r < board.GetLength(0); r++) // checks rows
             {
-                for(int c = 0; c < 3; c++) // checks columns
+                for(int c = 0; c < board.GetLength(1); c++) // checks columns
                 {
                     // sets x-sprite if not preset.
                     if (indexes[index].xSprite == null)
@@ -59,9 +59,9 @@ public class Board : MonoBehaviour
     public bool IsFull()
     {
         // goes through each index.
-        for(int r = 0; r < 3; r++)
+        for(int r = 0; r < board.GetLength(0); r++)
         {
-            for(int c = 0; c < 3; c++)
+            for(int c = 0; c < board.GetLength(1); c++)
             {
                 // open space available.
                 if(board[r, c].indexSymbol == symbol.none)

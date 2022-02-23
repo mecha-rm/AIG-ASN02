@@ -69,6 +69,12 @@ public class BoardIndex : MonoBehaviour
         indexSymbol = (symbol)newSymbol;
     }
 
+    // checks if the board index is available.
+    public bool IsAvailable()
+    {
+        return indexSymbol == symbol.none;
+    }
+
     // Update is called once per frame
     void Update()
     {
