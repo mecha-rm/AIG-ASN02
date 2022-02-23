@@ -73,6 +73,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   indexSymbol: 0
   sprite: {fileID: 0}
+  xSprite: {fileID: 0}
+  oSprite: {fileID: 0}
 --- !u!1 &5672641503377903740
 GameObject:
   m_ObjectHideFlags: 0
