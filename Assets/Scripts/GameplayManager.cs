@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// manages the gameplay. Everything is in one scene.
+// manages the gameplay.
 public class GameplayManager : MonoBehaviour
 {
     // the mouse from the gameplay manager.
