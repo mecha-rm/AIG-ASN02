@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // manages the title screen.
-
 public class TitleManager : MonoBehaviour
 {
+    // the audio manager for the game.
+    public AudioManager audioManager;
+
     // the volume slider.
     public Slider volumeSlider;
 
@@ -19,6 +21,10 @@ public class TitleManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // finds the audio manager.
+        if (audioManager == null)
+            audioManager = FindObjectOfType<AudioManager>();
+
         // grabs the volume slider. There should only be one 
         if (volumeSlider == null)
             volumeSlider = FindObjectOfType<Slider>(true);

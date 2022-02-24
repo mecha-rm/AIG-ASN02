@@ -33,7 +33,7 @@ public class AudioManager : MonoBehaviour
     public bool allowJngsOnStart = false;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         inStart = false;
     }
@@ -88,7 +88,7 @@ public class AudioManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         
     }

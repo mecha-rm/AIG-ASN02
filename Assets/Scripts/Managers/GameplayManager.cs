@@ -6,6 +6,9 @@ using UnityEngine.UI;
 // manages the gameplay.
 public class GameplayManager : MonoBehaviour
 {
+    // the audio manager for the game.
+    public AudioManager audioManager;
+
     // the mouse from the gameplay manager.
     public Mouse2D mouse;
 
@@ -67,6 +70,10 @@ public class GameplayManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // finds the audio manager.
+        if (audioManager == null)
+            audioManager = FindObjectOfType<AudioManager>();
+
         // finds and sets the mouse.
         if (mouse == null)
             mouse = FindObjectOfType<Mouse2D>();
@@ -252,6 +259,10 @@ public class GameplayManager : MonoBehaviour
 
         // updates the display.
         UpdateDisplay();
+
+        // change music
+        if (audioManager != null)
+            audioManager.ChangeBackgroundMusic(0);
     }
 
     // called when a player wins.
@@ -334,6 +345,10 @@ public class GameplayManager : MonoBehaviour
                 // the index is available.
                 if (index.IsAvailable())
                 {
+                    // plays sound.
+                    if (audioManager != null)
+                        audioManager.PlaySoundEffect(1);
+
                     // the current symbol
                     symbol currSym = (p1Turn) ? p1.playerSymbol : p2.playerSymbol;
                     index.SetIndexSymbol(currSym); // set to x for now.
@@ -353,6 +368,12 @@ public class GameplayManager : MonoBehaviour
                         // change the turn.
                         p1Turn = !p1Turn;
                     }
+                }
+                else
+                {
+                    // plays sound.
+                    if (audioManager != null)
+                        audioManager.PlaySoundEffect(2);
                 }
             }
         }
