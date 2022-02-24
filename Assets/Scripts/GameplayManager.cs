@@ -43,20 +43,26 @@ public class GameplayManager : MonoBehaviour
     // Statistics UI components.
     [Header("Statistics/UI")]
     public Text roundText;
-    public Text p1WinsText;
-    public Text p2WinsText;
+    public Text p1WinCountText;
+    public Text p2WinCountText;
 
     // Other UI components.
     [Header("Other UI")]
     // toggle for muting the audio.
     public Toggle muteToggle;
+    
+    // win text for the player.
+    public Text playerWinText;
+
+    // the text for showing a tie.
+    public Text tieText;
 
     // the list of the audio.
-    // [Header("Audio")]
-    // public AudioClip rulesBGM;
-    // public AudioClip roundBGM;
-    // public AudioClip winBGM;
-    // public AudioClip loseBGM;
+    [Header("Audio")]
+    public AudioClip rulesBGM;
+    public AudioClip roundBGM;
+    public AudioClip winBGM;
+    public AudioClip loseBGM;
 
     // Start is called before the first frame update
     void Start()
@@ -139,12 +145,12 @@ public class GameplayManager : MonoBehaviour
             roundText.text = "Round: " + round.ToString("D3");
 
         // display p1 wins in text.
-        if (p1WinsText != null)
-            p1WinsText.text = "Player 1 Wins: " + p1Wins.ToString("D3");
+        if (p1WinCountText != null)
+            p1WinCountText.text = "Player 1 Wins: " + p1Wins.ToString("D3");
 
         // display p2 wins in text.
-        if (p2WinsText != null)
-            p2WinsText.text = "Player 2 Wins: " + p2Wins.ToString("D3");
+        if (p2WinCountText != null)
+            p2WinCountText.text = "Player 2 Wins: " + p2Wins.ToString("D3");
 
         // hides the board cover.
         if (boardCover != null)
@@ -201,9 +207,16 @@ public class GameplayManager : MonoBehaviour
             if (p1SymbolToggleCover != null)
                 p1SymbolToggleCover.SetActive(!p1SymbolToggle.interactable);
         }
-            
 
-        
+        // hides the player win text.
+        if (playerWinText != null)
+            playerWinText.gameObject.SetActive(false);
+
+        // hies the tie text.
+        if (tieText != null)
+            tieText.gameObject.SetActive(false);
+
+
         board.ClearBoard();
 
         // shows or hides the numbers.
@@ -239,6 +252,49 @@ public class GameplayManager : MonoBehaviour
 
         // updates the display.
         UpdateDisplay();
+    }
+
+    // called when a player wins.
+    public void OnWin(bool p1Won)
+    {
+        // shows which person wins.
+        Debug.Log((p1Won) ? "P1 Wins." : "P2 Wins");
+
+        // updates win count.
+        if (p1Won)
+            p1Wins++;
+        else
+            p2Wins++;
+
+        // if the player win text 
+        if(playerWinText != null && tieText != null)
+        {
+            playerWinText.text = (p1Won) ? "Player 1 Wins!" : "Player 2 Wins!";
+
+            // show proper text.
+            playerWinText.gameObject.SetActive(true);
+            tieText.gameObject.SetActive(false);
+        }
+
+        // stop the round.
+        StopRound();
+    }
+
+    // called when the game ends in a tie.
+    public void OnTie()
+    {
+        // message to show tie.
+        Debug.Log("Tie.");
+
+        // if the player win text 
+        if (playerWinText != null && tieText != null)
+        {
+            playerWinText.gameObject.SetActive(false);
+            tieText.gameObject.SetActive(true);
+        }
+
+        // stop the round.
+        StopRound();
     }
 
     // clears out the data
@@ -285,20 +341,12 @@ public class GameplayManager : MonoBehaviour
                     // checks if the board has a winner.
                     if (board.HasWinner(currSym))
                     {
-                        Debug.Log((p1Turn) ? "Player 1 Wins" : "Player 2 Wins");
-
-                        // updates win count.
-                        if (p1Turn)
-                            p1Wins++;
-                        else
-                            p2Wins++;
-
-                        StopRound();
+                        // turn aligns with whoever won.
+                        OnWin(p1Turn);
                     }
                     else if (board.IsFull()) // no winner, so check if the game is over.
                     {
-                        Debug.Log("Tie.");
-                        StopRound();
+                        OnTie();
                     }
                     else
                     {
@@ -307,34 +355,6 @@ public class GameplayManager : MonoBehaviour
                     }
                 }
             }
-
-            // // player has clicked on something.
-            // if ( mouse.clickedObject != null)
-            // {
-            //     BoardIndex index;
-            // 
-            //     // tries to get the door component from the object.
-            //     if (mouse.clickedObject.TryGetComponent<BoardIndex>(out index))
-            //     {
-            //         // the current symbol (TODO: get from current player.)
-            //         symbol currSym = symbol.x;
-            // 
-            //         index.SetIndexSymbol(currSym); // set to x for now.
-            // 
-            //         // checks if the board has a winner.
-            //         if(board.HasWinner(currSym))
-            //         {
-            //             // checks
-            //             Debug.Log("WIN");
-            //         }
-            //         else if(board.IsFull()) // no winner, so check if the game is over.
-            //         {
-            //             Debug.Log("Board Full.");
-            //         }
-            // 
-            //     }
-            // 
-            // }
         }
 
 

@@ -121,18 +121,21 @@ public class Board : MonoBehaviour
         // row 0
         if(boardArray[0, 0].indexSymbol == sym && boardArray[0, 1].indexSymbol == sym && boardArray[0, 2].indexSymbol == sym)
         {
+            Debug.Log("Row 0 Win.");
             return true;
         }
 
         // row 1
         if (boardArray[1, 0].indexSymbol == sym && boardArray[1, 1].indexSymbol == sym && boardArray[1, 2].indexSymbol == sym)
         {
+            Debug.Log("Row 1 Win.");
             return true;
         }
 
         // row 2
         if (boardArray[2, 0].indexSymbol == sym && boardArray[2, 1].indexSymbol == sym && boardArray[2, 2].indexSymbol == sym)
         {
+            Debug.Log("Row 2 Win.");
             return true;
         }
 
@@ -140,30 +143,36 @@ public class Board : MonoBehaviour
         // column 0
         if (boardArray[0, 0].indexSymbol == sym && boardArray[1, 0].indexSymbol == sym && boardArray[2, 0].indexSymbol == sym)
         {
+            Debug.Log("Column 0 Win.");
             return true;
         }
 
         // column 1
         if (boardArray[0, 1].indexSymbol == sym && boardArray[1, 1].indexSymbol == sym && boardArray[2, 1].indexSymbol == sym)
         {
+            Debug.Log("Column 1 Win.");
             return true;
         }
 
         // column 2
         if (boardArray[0, 2].indexSymbol == sym && boardArray[1, 2].indexSymbol == sym && boardArray[2, 2].indexSymbol == sym)
         {
+            Debug.Log("Column 2 Win.");
             return true;
         }
 
         // DIAGONALS
+        // left-to-right
         if (boardArray[0, 0].indexSymbol == sym && boardArray[1, 1].indexSymbol == sym && boardArray[2, 2].indexSymbol == sym)
         {
+            Debug.Log("Diagonal Left-to-Right Win.");
             return true;
         }
 
-        // column 1
-        if (boardArray[2, 1].indexSymbol == sym && boardArray[1, 1].indexSymbol == sym && boardArray[0, 2].indexSymbol == sym)
+        // right-to-left
+        if (boardArray[2, 0].indexSymbol == sym && boardArray[1, 1].indexSymbol == sym && boardArray[0, 2].indexSymbol == sym)
         {
+            Debug.Log("Diagonal Right-to-Left Win.");
             return true;
         }
 
