@@ -7,7 +7,9 @@ using UnityEngine.UI;
 public class TitleManager : MonoBehaviour
 {
     // the audio manager for the game.
-    public AudioManager audioManager;
+    // audio components tied to buttons are attached to them.
+    // audio components tied to game events are done in the scripts.
+    public TitleAudioManager audioManager;
 
     // the volume slider.
     public Slider volumeSlider;
@@ -23,7 +25,7 @@ public class TitleManager : MonoBehaviour
     {
         // finds the audio manager.
         if (audioManager == null)
-            audioManager = FindObjectOfType<AudioManager>();
+            audioManager = FindObjectOfType<TitleAudioManager>();
 
         // grabs the volume slider. There should only be one 
         if (volumeSlider == null)

@@ -7,7 +7,7 @@ public class AudioManager : MonoBehaviour
 {
     // if 'true', the title manager is in the start function.
     // this is used to stop sound effects from going off when the game starts.
-    private bool inStart = true;
+    protected bool inStart = true;
 
     // music
     [Header("Background Music")]
@@ -35,7 +35,7 @@ public class AudioManager : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        inStart = false;
+        // inStart = false;
     }
 
     // changes the background music.
@@ -73,7 +73,7 @@ public class AudioManager : MonoBehaviour
     }
 
     // plays a jingle.
-    public void PlayJingleEffect(int index)
+    public void PlayJingle(int index)
     {
         // in the start function, so play nothing.
         if (inStart && !allowJngsOnStart)
@@ -90,6 +90,7 @@ public class AudioManager : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        
+        // no longer in the start function, so set this to false.
+        inStart = false;
     }
 }

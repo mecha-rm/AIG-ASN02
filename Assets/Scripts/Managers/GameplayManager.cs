@@ -7,13 +7,18 @@ using UnityEngine.UI;
 public class GameplayManager : MonoBehaviour
 {
     // the audio manager for the game.
-    public AudioManager audioManager;
+    // audio components tied to buttons are attached to them.
+    // audio components tied to game events are done in the scripts.
+    public GameplayAudioManager audioManager;
 
     // the mouse from the gameplay manager.
     public Mouse2D mouse;
 
     // the board.
     public Board board;
+
+    // the last index chosen by a player.
+    private BoardIndex lastChosenIndex;
 
     // if 'true', the numbers are shown.
     public bool showNumbers = true;
@@ -24,15 +29,23 @@ public class GameplayManager : MonoBehaviour
     // cover for the board.
     public GameObject boardCover;
 
-    // the two players.
+    // player variables.
     [Header("Players")]
+    // players
     public Player p1;
     public Player p2;
 
-    public Toggle p1SymbolToggle; // toggle for player 1's symbol.
-    public GameObject p1SymbolToggleCover; // cover for disabling
-    public Toggle p1StartsToggle; // toggle for player 1 going first.
-    public bool p1Turn = true; // if 'false', it's p2's turn.
+    // toggle for player 1's symbol.
+    public Toggle p1SymbolToggle;
+
+    // cover for disabling
+    public GameObject p1SymbolToggleCover;
+
+    // toggle for player 1 going first.
+    public Toggle p1StartsToggle;
+
+    // if 'false', it's p2's turn.
+    public bool p1Turn = true; 
 
     // statistics
     [Header("Statistics")]
@@ -60,19 +73,12 @@ public class GameplayManager : MonoBehaviour
     // the text for showing a tie.
     public Text tieText;
 
-    // the list of the audio.
-    [Header("Audio")]
-    public AudioClip rulesBGM;
-    public AudioClip roundBGM;
-    public AudioClip winBGM;
-    public AudioClip loseBGM;
-
     // Start is called before the first frame update
     void Start()
     {
         // finds the audio manager.
         if (audioManager == null)
-            audioManager = FindObjectOfType<AudioManager>();
+            audioManager = FindObjectOfType<GameplayAudioManager>();
 
         // finds and sets the mouse.
         if (mouse == null)
@@ -223,7 +229,7 @@ public class GameplayManager : MonoBehaviour
         if (tieText != null)
             tieText.gameObject.SetActive(false);
 
-
+        // clears out the board.
         board.ClearBoard();
 
         // shows or hides the numbers.
@@ -234,6 +240,10 @@ public class GameplayManager : MonoBehaviour
 
         // updates the display.
         UpdateDisplay();
+
+        // change bgm.
+        if (audioManager != null)
+            audioManager.ChangeToRoundBgm();
     }
 
     // stops the round.
@@ -260,9 +270,9 @@ public class GameplayManager : MonoBehaviour
         // updates the display.
         UpdateDisplay();
 
-        // change music
+        // change bgm.
         if (audioManager != null)
-            audioManager.ChangeBackgroundMusic(0);
+            audioManager.ChangeToRulesBgm();
     }
 
     // called when a player wins.
@@ -289,6 +299,10 @@ public class GameplayManager : MonoBehaviour
 
         // stop the round.
         StopRound();
+
+        // change bgm.
+        if (audioManager != null)
+            audioManager.ChangeToWinBgm();
     }
 
     // called when the game ends in a tie.
@@ -306,6 +320,10 @@ public class GameplayManager : MonoBehaviour
 
         // stop the round.
         StopRound();
+
+        // change bgm.
+        if (audioManager != null)
+            audioManager.ChangeToTieBgm();
     }
 
     // clears out the data
@@ -336,7 +354,7 @@ public class GameplayManager : MonoBehaviour
         // checks to see if the game is running
         if(running)
         {
-            BoardIndex index;
+            BoardIndex index = null;
             index = (p1Turn) ? p1.GetChosenIndex() : p2.GetChosenIndex(); // TODO: change players.
 
             // tries to get the door component from the object.
@@ -347,7 +365,25 @@ public class GameplayManager : MonoBehaviour
                 {
                     // plays sound.
                     if (audioManager != null)
-                        audioManager.PlaySoundEffect(1);
+                    {
+                        bool playSound = false;
+
+                        // if it's a computer player the sound doesn't play.
+                        // this is because the symbol is placed instantly.
+                        if(p1Turn) // player 1's turn
+                        {
+                            playSound = !(p1 is ComputerPlayer);
+                        }
+                        else // player 2's turn
+                        {
+                            playSound = !(p2 is ComputerPlayer);
+                        }
+
+                        // plays the sound.
+                        if (playSound)
+                            audioManager.PlayBoardIndexSuccessSfx();
+                    }
+                        
 
                     // the current symbol
                     symbol currSym = (p1Turn) ? p1.playerSymbol : p2.playerSymbol;
@@ -372,10 +408,12 @@ public class GameplayManager : MonoBehaviour
                 else
                 {
                     // plays sound.
-                    if (audioManager != null)
-                        audioManager.PlaySoundEffect(2);
+                    if (audioManager != null && index != lastChosenIndex)
+                        audioManager.PlayBoardIndexFailSfx();
                 }
             }
+
+            lastChosenIndex = index;
         }
 
 
