@@ -40,7 +40,7 @@ public class UserPlayer : Player
     void Update()
     {
         // saves the clicked object. There's only one mouse.
-        clickedObject = manager.mouse.lastClickedObject;
+        clickedObject = manager.mouse.heldObject;
 
         // TODO: try to optimize this if possible.
         // checks if any key has been pressed down.

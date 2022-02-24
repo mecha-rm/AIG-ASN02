@@ -58,7 +58,7 @@ public class BoardIndex : MonoBehaviour
         switch (indexSymbol)
         {
             case symbol.none: // none
-                sprite.sprite = null;
+                sprite.sprite = defaultSprite;
                 break;
             case symbol.x: // x
                 sprite.sprite = xSprite;
@@ -84,6 +84,10 @@ public class BoardIndex : MonoBehaviour
     // hides the number for the board index.
     public void HideNumber()
     {
+        // sprite object does not exist.
+        if (sprite == null)
+            return;
+
         // sets this to null so that the sprite is hidden.
         if (sprite.sprite == defaultSprite)
             sprite.sprite = null;
@@ -92,6 +96,10 @@ public class BoardIndex : MonoBehaviour
     // shows the number for the board index if it is not set.
     public void ShowNumber()
     {
+        // sprite object does not exist.
+        if (sprite == null)
+            return;
+
         // goes back to default sprite.
         if (sprite.sprite == null || sprite.sprite == defaultSprite)
             sprite.sprite = defaultSprite;
@@ -101,9 +109,9 @@ public class BoardIndex : MonoBehaviour
     public void ToggleNumber()
     {
         if (sprite.sprite == null) // show
-            sprite.sprite = defaultSprite;
+            ShowNumber();
         else if (sprite.sprite == defaultSprite) // hide
-            sprite.sprite = null;
+            HideNumber();
     }
 
     // resets the board index.

@@ -92,7 +92,7 @@ public class Board : MonoBehaviour
             Debug.LogError("Could not find 9 indexes in the scene.");
         }
 
-        Debug.Log("Done");
+        Debug.Log("Board Generated.");
     }
 
     // checks if the game is over.
@@ -241,6 +241,16 @@ public class Board : MonoBehaviour
         }
 
         return false;
+    }
+
+    // clears the board.
+    public void ClearBoard()
+    {
+        // resets the board list.
+        foreach(BoardIndex index in boardList)
+        {
+            index.SetIndexSymbol(symbol.none);
+        }
     }
 
     // hides the default board index sprites.

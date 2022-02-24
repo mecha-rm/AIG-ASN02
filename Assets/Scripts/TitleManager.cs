@@ -28,13 +28,16 @@ public class TitleManager : MonoBehaviour
             volumeSlider.value = AudioListener.volume;
 
         // should only be one toggle.
-        if (muteToggle)
+        if (muteToggle == null)
             muteToggle = FindObjectOfType<Toggle>();
 
         // current setting.
         if (muteToggle != null)
             muteToggle.isOn = AudioListener.pause;
 
+        // only one drop down.
+        if(screenSizeSel == null)
+            screenSizeSel = FindObjectOfType<Dropdown>();
 
         // sets to current screen size.
         if (screenSizeSel != null)
@@ -67,6 +70,12 @@ public class TitleManager : MonoBehaviour
             }
 
         }
+    }
+
+    // called when the volume slider changes.
+    public void OnVolumeSliderChange()
+    {
+        AudioListener.volume = Mathf.Clamp01(volumeSlider.value);
     }
 
     // called when the mute toggle changes.
