@@ -17,7 +17,7 @@ Title: Welcome to Chaos
 Artist: Ross Bugden
 Website: GameSounds.xyz
 Page Link: https://gamesounds.xyz/?dir=Music%20-%20Ross%20Bugden
-Direct Link: https://gamesounds.xyz/Music%20-%20Ross%20Bugden/Ross%20Bugden%20-%20Welcome%20to%20Chaos.mp3
+File Link: https://gamesounds.xyz/Music%20-%20Ross%20Bugden/Ross%20Bugden%20-%20Welcome%20to%20Chaos.mp3
 
 
 === Rules ===
@@ -28,7 +28,7 @@ Title: Acapulco Shore
 Artist: Anttis Instrumentals
 Website: GameSounds.xyz
 Page Link: https://gamesounds.xyz/?dir=Anttis%20instrumentals/Songs
-Direct Link: https://gamesounds.xyz/Anttis%20instrumentals/Songs/Anttis%20instrumentals%20-%20Acapulco%20Shore.mp3
+File Link: https://gamesounds.xyz/Anttis%20instrumentals/Songs/Anttis%20instrumentals%20-%20Acapulco%20Shore.mp3
 
 
 === Tie ===
@@ -39,7 +39,7 @@ Title: A journey into sevenths
 Artist: Anttis Instrumentals
 Website: GameSounds.xyz
 Page Link: https://gamesounds.xyz/?dir=Anttis%20instrumentals/Songs
-Direct Link: https://gamesounds.xyz/Anttis%20instrumentals/Songs/Anttis%20instrumentals%20-%20A%20journey%20into%20sevenths.mp3
+File Link: https://gamesounds.xyz/Anttis%20instrumentals/Songs/Anttis%20instrumentals%20-%20A%20journey%20into%20sevenths.mp3
 
 
 === Title ===
@@ -50,7 +50,7 @@ Title: 31 Minutes
 Artist: Anttis Instrumentals
 Website: GameSounds.xyz
 Page Link: https://gamesounds.xyz/?dir=Anttis%20instrumentals/Songs
-Direct Link: https://gamesounds.xyz/Anttis%20instrumentals/Songs/Anttis%20instrumentals%20-%2031%20minutes.mp3
+File Link: https://gamesounds.xyz/Anttis%20instrumentals/Songs/Anttis%20instrumentals%20-%2031%20minutes.mp3
 
 
 === Win ===
@@ -61,7 +61,7 @@ Title: 700
 Artist: Anttis Instrumentals
 Website: GameSounds.xyz
 Page Link: https://gamesounds.xyz/?dir=Anttis%20instrumentals/Songs
-Direct Link: https://gamesounds.xyz/Anttis%20instrumentals/Songs/Anttis%20instrumentals%20-%20700.mp3
+File Link: https://gamesounds.xyz/Anttis%20instrumentals/Songs/Anttis%20instrumentals%20-%20700.mp3
 
 == Jingles ==
 Jingles for the game.
@@ -74,7 +74,7 @@ Title: button-9
 Artist: unknown
 Website: GameSounds.xyz
 Page Link: https://gamesounds.xyz/?dir=Sound%20Effects/Buttons
-Direct Link: https://gamesounds.xyz/Sound%20Effects/Buttons/button-9.wav
+File Link: https://gamesounds.xyz/Sound%20Effects/Buttons/button-9.wav
 
 
 == Win ==
@@ -85,7 +85,7 @@ Title: button-3
 Artist: unknown
 Website: GameSounds.xyz
 Page Link: https://gamesounds.xyz/?dir=Sound%20Effects/Buttons
-Direct Link: https://gamesounds.xyz/Sound%20Effects/Buttons/button-3.wav
+File Link: https://gamesounds.xyz/Sound%20Effects/Buttons/button-3.wav
 
 == Sound Effects ==
 
@@ -97,7 +97,7 @@ Title: button-10
 Artist: unknown
 Website: GameSounds.xyz
 Page Link: https://gamesounds.xyz/?dir=Sound%20Effects/Buttons
-Direct Link: https://gamesounds.xyz/Sound%20Effects/Buttons/button-10.wav
+File Link: https://gamesounds.xyz/Sound%20Effects/Buttons/button-10.wav
 
 == Board Index Success ==
 File: sfx_board_index_success.mp3
@@ -107,6 +107,6 @@ Title: button-29
 Artist: unknown
 Website: GameSounds.xyz
 Page Link: https://gamesounds.xyz/?dir=Sound%20Effects/Buttons
-Direct Link: https://gamesounds.xyz/Sound%20Effects/Buttons/button-29.wav
+File Link: https://gamesounds.xyz/Sound%20Effects/Buttons/button-29.wav
 
 
