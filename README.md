@@ -31,7 +31,7 @@ Page Link: https://gamesounds.xyz/?dir=Anttis%20instrumentals/Songs
 File Link: https://gamesounds.xyz/Anttis%20instrumentals/Songs/Anttis%20instrumentals%20-%20Acapulco%20Shore.mp3
 
 
-=== Tie ===
+=== Tie (BGM) ===
 File: bgm_tie.mp3
 Description: Song played when the game ends in a tie.
 
@@ -53,7 +53,7 @@ Page Link: https://gamesounds.xyz/?dir=Anttis%20instrumentals/Songs
 File Link: https://gamesounds.xyz/Anttis%20instrumentals/Songs/Anttis%20instrumentals%20-%2031%20minutes.mp3
 
 
-=== Win ===
+=== Win (BGM) ===
 File: bgm_win.mp3
 Description: Song played when a player wins.
 
@@ -66,7 +66,7 @@ File Link: https://gamesounds.xyz/Anttis%20instrumentals/Songs/Anttis%20instrume
 == Jingles ==
 Jingles for the game.
 
-== Tie ==
+== Tie (Jingle) ==
 File: jng_tie.mp3
 Description: Jingle for tying.
 
@@ -77,8 +77,8 @@ Page Link: https://gamesounds.xyz/?dir=Sound%20Effects/Buttons
 File Link: https://gamesounds.xyz/Sound%20Effects/Buttons/button-9.wav
 
 
-== Win ==
-File: jng_tie.mp3
+== Win (Jingle) ==
+File: jng_win.mp3
 Description: Jingle for tieing.
 
 Title: button-3
