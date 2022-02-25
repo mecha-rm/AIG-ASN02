@@ -18,6 +18,13 @@ public class AudioManager : MonoBehaviour
     // list of bgms
     public List<AudioClip> bgmList;
 
+    // jingles and fanfares
+    [Header("Jingles/Fanfares")]
+    public List<AudioSource> jngList;
+
+    // if 'true', sound effects can play while the game is starting.
+    public bool allowJngsOnStart = false;
+
     // the sound effects
     [Header("Sound Effects")]
     public List<AudioSource> sfxList;
@@ -25,12 +32,6 @@ public class AudioManager : MonoBehaviour
     // if 'true', sound effects can play while the game is starting.
     public bool allowSfxsOnStart = false;
 
-    // jingles and fanfares
-    [Header("Jingles/Fanfares")]
-    public List<AudioSource> jngList;
-
-    // if 'true', sound effects can play while the game is starting.
-    public bool allowJngsOnStart = false;
 
     // Start is called before the first frame update
     protected virtual void Start()
