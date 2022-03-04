@@ -14,8 +14,8 @@ public class UserPlayer : Player
         base.Start();
 
         // defaults to x symbol.
-        if (playerSymbol == symbol.none)
-            playerSymbol = symbol.x;
+        if (playerSymbol == boardSymbol.none)
+            playerSymbol = boardSymbol.x;
     }
 
     // gets the chosen index from the user player.

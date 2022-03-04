@@ -127,9 +127,9 @@ public class GameplayManager : MonoBehaviour
         // symbol toggle set.
         if(p1SymbolToggle != null && p1 != null && p2 != null)
         {
-            if (p1.playerSymbol == symbol.x) // using x symbol
+            if (p1.playerSymbol == boardSymbol.x) // using x symbol
                 p1SymbolToggle.isOn = true;
-            else if (p1.playerSymbol == symbol.o) // using o symbol
+            else if (p1.playerSymbol == boardSymbol.o) // using o symbol
                 p1SymbolToggle.isOn = false;
             else // calls to set value.
                 OnPlayer1SymbolToggleChange();
@@ -184,13 +184,13 @@ public class GameplayManager : MonoBehaviour
         // change symbol.
         if (p1SymbolToggle.isOn) // x symbol
         {
-            p1.playerSymbol = symbol.x;
-            p2.playerSymbol = symbol.o;
+            p1.playerSymbol = boardSymbol.x;
+            p2.playerSymbol = boardSymbol.o;
         }
         else // o symbol
         {
-            p1.playerSymbol = symbol.o;
-            p2.playerSymbol = symbol.x;
+            p1.playerSymbol = boardSymbol.o;
+            p2.playerSymbol = boardSymbol.x;
         }
     }
 
@@ -386,7 +386,7 @@ public class GameplayManager : MonoBehaviour
                         
 
                     // the current symbol
-                    symbol currSym = (p1Turn) ? p1.playerSymbol : p2.playerSymbol;
+                    boardSymbol currSym = (p1Turn) ? p1.playerSymbol : p2.playerSymbol;
                     index.SetIndexSymbol(currSym); // set to x for now.
 
                     // checks if the board has a winner.

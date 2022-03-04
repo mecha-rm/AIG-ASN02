@@ -104,7 +104,7 @@ public class Board : MonoBehaviour
             for(int c = 0; c < boardArray.GetLength(1); c++)
             {
                 // open space available.
-                if(boardArray[r, c].indexSymbol == symbol.none)
+                if(boardArray[r, c].indexSymbol == boardSymbol.none)
                 {
                     return false;
                 }
@@ -115,7 +115,7 @@ public class Board : MonoBehaviour
     }
 
     // checks if the board has a winning chain.
-    public bool HasWinner(symbol sym)
+    public bool HasWinner(boardSymbol sym)
     {
         // ROWS
         // row 0
@@ -187,7 +187,7 @@ public class Board : MonoBehaviour
         foreach(BoardIndex boardIndex in boardArray)
         {
             if (boardIndex == index)
-                return boardIndex.indexSymbol == symbol.none;
+                return boardIndex.indexSymbol == boardSymbol.none;
         }
 
         return false;
@@ -214,7 +214,7 @@ public class Board : MonoBehaviour
     }
 
     // sets a board index on the actual space.
-    public bool SetBoardArrayIndexSymbol(int row, int col, symbol sym, bool overwrite = false)
+    public bool SetBoardArrayIndexSymbol(int row, int col, boardSymbol sym, bool overwrite = false)
     {
         // out of bounds.
         if (row < 0 || row >= boardArray.GetLength(0) || col < 0|| col >= boardArray.GetLength(1))
@@ -225,7 +225,7 @@ public class Board : MonoBehaviour
             return false;
 
         // changes symbol.
-        if(boardArray[row, col].indexSymbol != symbol.none || overwrite == true)
+        if(boardArray[row, col].indexSymbol != boardSymbol.none || overwrite == true)
         {
             boardArray[row, col].SetIndexSymbol(sym);
             return true;
@@ -236,14 +236,14 @@ public class Board : MonoBehaviour
     }
 
     // sets the index of the board list.
-    public bool SetBoardListIndexSymbol(int index, symbol sym, bool overwrite = false)
+    public bool SetBoardListIndexSymbol(int index, boardSymbol sym, bool overwrite = false)
     {
         // bounds check.
         if (index < 0 || index >= boardList.Count)
             return false;
 
         // checks if change allowed.
-        if (boardList[index].indexSymbol != symbol.none || overwrite == true)
+        if (boardList[index].indexSymbol != boardSymbol.none || overwrite == true)
         {
             boardList[index].SetIndexSymbol(sym);
             return true;
@@ -252,13 +252,34 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    // generates a board array of board symbols.
+    public boardSymbol[,] GenerateBoardSymbolArray()
+    {
+        // makes the array
+        boardSymbol[,] arr = new boardSymbol[boardArray.GetLength(0), boardArray.GetLength(1)];
+
+        // all rows
+        for(int row = 0; row < arr.GetLength(0); row++)
+        {
+            // all columns
+            for(int col = 0; col < arr.GetLength(1); col++)
+            {
+                // gets the symbol
+                arr[row, col] = boardArray[row, col].indexSymbol;
+            }
+        }
+
+        // returns the array.
+        return arr;
+    }
+
     // clears the board.
     public void ClearBoard()
     {
         // resets the board list.
         foreach(BoardIndex index in boardList)
         {
-            index.SetIndexSymbol(symbol.none);
+            index.SetIndexSymbol(boardSymbol.none);
         }
     }
 

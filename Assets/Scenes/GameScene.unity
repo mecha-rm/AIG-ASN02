@@ -1541,6 +1541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSymbol: 0
   manager: {fileID: 0}
+  useAI: 0
 --- !u!1 &686824207
 GameObject:
   m_ObjectHideFlags: 0
@@ -1690,7 +1691,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 686297911f5f57d40a76281a1b944ca8, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.04
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2462,7 +2463,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: b51ee36adbdc0f040ad61b235f033aee, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -3088,15 +3089,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 206474c99eaa3384e9796fd1f5bffde2, type: 3}
   - {fileID: 8300000, guid: e865e3eedc636354b958d35c8467dc7a, type: 3}
   - {fileID: 8300000, guid: de3d1f46c9a21dd4e97c7e775409bb07, type: 3}
+  jngList:
+  - {fileID: 962110820}
+  - {fileID: 1242186637}
+  allowJngsOnStart: 0
   sfxList:
   - {fileID: 361733573}
   - {fileID: 874136129}
   - {fileID: 691484939}
   allowSfxsOnStart: 0
-  jngList:
-  - {fileID: 962110820}
-  - {fileID: 1242186637}
-  allowJngsOnStart: 0
 --- !u!1001 &958729767
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class Player : MonoBehaviour
 {
     // the symbol used by the player
-    public symbol playerSymbol;
+    public boardSymbol playerSymbol;
 
     // the gameplay manager.
     public GameplayManager manager;

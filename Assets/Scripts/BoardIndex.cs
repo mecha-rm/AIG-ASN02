@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// symbol enum
-public enum symbol { none = 0, x = 1, o = 2 }
+// board symbol enum
+public enum boardSymbol { none = 0, x = 1, o = 2 }
 
 // spot in the board.
 public class BoardIndex : MonoBehaviour
 {
     // the symbol in this board index.
     // TODO: change permissions level.
-    public symbol indexSymbol = symbol.none;
+    public boardSymbol indexSymbol = boardSymbol.none;
 
     // the sprite for the index.
     public SpriteRenderer sprite;
@@ -50,20 +50,20 @@ public class BoardIndex : MonoBehaviour
     }
 
     // sets the symbol
-    public void SetIndexSymbol(symbol newSymbol)
+    public void SetIndexSymbol(boardSymbol newSymbol)
     {
         indexSymbol = newSymbol;
 
         // changes sprite based on new symbol.
         switch (indexSymbol)
         {
-            case symbol.none: // none
+            case boardSymbol.none: // none
                 sprite.sprite = defaultSprite;
                 break;
-            case symbol.x: // x
+            case boardSymbol.x: // x
                 sprite.sprite = xSprite;
                 break;
-            case symbol.o: // o
+            case boardSymbol.o: // o
                 sprite.sprite = oSprite;
                 break;
         }
@@ -72,13 +72,13 @@ public class BoardIndex : MonoBehaviour
     // sets the symbol
     public void SetIndexSymbol(int newSymbol)
     {
-        indexSymbol = (symbol)newSymbol;
+        indexSymbol = (boardSymbol)newSymbol;
     }
 
     // checks if the board index is available.
     public bool IsAvailable()
     {
-        return indexSymbol == symbol.none;
+        return indexSymbol == boardSymbol.none;
     }
 
     // hides the number for the board index.
@@ -117,7 +117,7 @@ public class BoardIndex : MonoBehaviour
     // resets the board index.
     public void ResetBoardIndex()
     {
-        indexSymbol = symbol.none;
+        indexSymbol = boardSymbol.none;
         sprite.sprite = defaultSprite;
     }
 
