@@ -15,23 +15,29 @@ public class ComputerPlayer : Player
         public boardSymbol[,] boardState;
 
         // the lost of related branches.
-        public List<MinMaxNode> nodes;
+        // public List<MinMaxNode> nodes;
 
         // copy constructor
         public MinMaxNode(MinMaxNode copy)
         {
             score = copy.score;
-            boardState = copy.boardState;
-            nodes = copy.nodes;
+
+            // pass-by reference
+            // boardState = copy.boardState;
+
+            // copies the contents.
+            boardState = copy.boardState.Clone() as boardSymbol[,];
+
+            // nodes = copy.nodes;
         }
 
-        // initializes score, boardState, and nodes.
-        public MinMaxNode(int score, boardSymbol[,] boardState, List<MinMaxNode> nodes)
-        {
-            this.score = score;
-            this.boardState = boardState;
-            this.nodes = nodes;
-        }
+        // // initializes score, boardState, and nodes.
+        // public MinMaxNode(int score, boardSymbol[,] boardState, List<MinMaxNode> nodes)
+        // {
+        //     this.score = score;
+        //     this.boardState = boardState;
+        //     this.nodes = nodes;
+        // }
     }
 
     // if 'true', the computer player uses its AI.
@@ -265,16 +271,17 @@ public class ComputerPlayer : Player
                 {
                     // makes a new node.
                     MinMaxNode newNode = new MinMaxNode(rootNode);
-                    boardSymbol symbol = boardSymbol.none; // default.
+                    boardSymbol symbol = playerSymbol; // player symbol.
+                    // boardSymbol symbol = boardSymbol.none; // default.
 
                     // since it's the player's turn, the next row will be the opponent's symbol.
-                    if (playerSymbol == boardSymbol.x) // computer uses (x) 
-                        symbol = boardSymbol.o;
+                    // if (playerSymbol == boardSymbol.x) // computer uses (x) 
+                    //     symbol = boardSymbol.o;
+                    // 
+                    // if (playerSymbol == boardSymbol.o) // computer uses (o) 
+                    //     symbol = boardSymbol.x;
 
-                    if (playerSymbol == boardSymbol.o) // computer uses (o) 
-                        symbol = boardSymbol.x;
-
-                    // slot in the symbol.
+                    // slot in the symbol for this player's turn.
                     newNode.boardState[row, col] = symbol;
 
                     // calls the function to follow the branch through.
@@ -286,6 +293,10 @@ public class ComputerPlayer : Player
                 }
             }
         }
+
+        // saves the list of nodes.
+        // this doesn't really serve a purpose.
+        // rootNode.nodes = nodes;
 
         // gets best score.
         if(nodes.Count > 0)

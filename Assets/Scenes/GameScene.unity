@@ -1541,7 +1541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSymbol: 0
   manager: {fileID: 0}
-  useAI: 0
+  useAI: 1
 --- !u!1 &686824207
 GameObject:
   m_ObjectHideFlags: 0
