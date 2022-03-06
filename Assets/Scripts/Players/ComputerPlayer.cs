@@ -28,7 +28,9 @@ public class ComputerPlayer : Player
             // copies the contents.
             boardState = copy.boardState.Clone() as boardSymbol[,];
 
-            // nodes = copy.nodes;
+            // nodes = new List<MinMaxNode>(copy.nodes);
+
+            // nodes = copy.nodes.CopyTo(;
         }
 
         // // initializes score, boardState, and nodes.
@@ -43,6 +45,9 @@ public class ComputerPlayer : Player
     // if 'true', the computer player uses its AI.
     // TODO: change to default 'true' when A is complete.
     public bool useAI = false;
+
+    // the maximum length of a branch.
+    private const int maxBranchLen = 9;
 
     // Start is called before the first frame update
     protected new void Start()
@@ -132,7 +137,7 @@ public class ComputerPlayer : Player
 
     // runs the node and goes through all attached branches.
     // if there are no branches a value is returned.
-    private int RunNode(MinMaxNode node, bool yourTurn)
+    private int RunNode(MinMaxNode node, bool yourTurn, int depth)
     {
         // the list of nodes.
         List<MinMaxNode> nodes = new List<MinMaxNode>();
@@ -155,8 +160,8 @@ public class ComputerPlayer : Player
             // the board being filled is checked at the end of the function.
             if(winSymbol != boardSymbol.none)
             {
-                // returns result.
-                return (winSymbol == playerSymbol) ? 1 : -1;
+                // returns terminal value result.
+                return maxBranchLen - depth + ((winSymbol == playerSymbol) ? 1 : -1);
             }
 
         }
@@ -196,7 +201,7 @@ public class ComputerPlayer : Player
         // checks nodes.
         if(nodes.Count == 0) // no nodes, so all spots are filled.
         {
-            return 0;
+            return maxBranchLen - depth + 0; // terminal value.
         }
         else
         {
@@ -207,9 +212,9 @@ public class ComputerPlayer : Player
                 MinMaxNode temp = nodes[i]; // get node.
 
                 // grabs the result.
-                int result = RunNode(nodes[i], !yourTurn);
+                int result = RunNode(nodes[i], !yourTurn, depth + 1);
                 
-                temp.score += result; // adds to the score.
+                temp.score = result; // adds to the score.
                 nodes[i] = temp; // put back in list.
             }
 
@@ -221,15 +226,21 @@ public class ComputerPlayer : Player
             {
                 if(yourTurn) // it's the computer player's turn (find max)
                 {
-                    // larger score found.
-                    if (nodes[i].score > score)
-                        score = nodes[i].score;
+                    // max
+                    score = Mathf.Max(nodes[i].score, score);
+
+                    // // larger score found.
+                    // if (nodes[i].score > score)
+                    //     score = nodes[i].score;
                 }
                 else // it's the opponent's turn (find min)
                 {
-                    // smaller score found.
-                    if (nodes[i].score < score)
-                        score = nodes[i].score;
+                    // min
+                    score = Mathf.Min(nodes[i].score, score);
+
+                    // // smaller score found.
+                    // if (nodes[i].score < score)
+                    //     score = nodes[i].score;
                 }
             }
 
@@ -285,7 +296,7 @@ public class ComputerPlayer : Player
                     newNode.boardState[row, col] = symbol;
 
                     // calls the function to follow the branch through.
-                    newNode.score = RunNode(newNode, false);
+                    newNode.score = RunNode(newNode, false, 1); // going into level 1
 
                     // adds the new node and index to the lists.
                     nodes.Add(newNode);
@@ -314,11 +325,12 @@ public class ComputerPlayer : Player
             {
                 if(nodes[i].score > value) // higher score found.
                 {
-                    value = nodes[i].score; // grab score.
                     nodeIndex = i; // saves the index.
+                    value = nodes[i].score; // grab score.
                 }
                 else if(nodes[i].score == value) // value found.
                 {
+                    nodeIndex = i;
                     indexBestOptions.Add(nodeIndex);
                 }
             }
@@ -326,6 +338,8 @@ public class ComputerPlayer : Player
             // more than one best option, so choose a random spot.
             if (indexBestOptions.Count > 1)
                 nodeIndex = indexBestOptions[Random.Range(0, indexBestOptions.Count)];
+            else
+                nodeIndex = 0;
         }
 
         // returning a value.
