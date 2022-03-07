@@ -140,6 +140,8 @@ public class ComputerPlayer : Player
     // if there are no branches a value is returned.
     private int RunNode(MinMaxNode node, int depth, int branchNum, bool yourTurn)
     {
+        // Debug.Log("Depth: " + depth);
+
         // the list of nodes.
         // List<MinMaxNode> nodes = new List<MinMaxNode>();
         node.nodes = new List<MinMaxNode>(); // starts new list.
@@ -195,15 +197,23 @@ public class ComputerPlayer : Player
 
                 // it's the loser's turn right now.
                 // if true, the check being done will be for the highest value. This is the outcome we want.
-                if(winSymbol == playerSymbol) // +1
-                {
-                    return branchNum * (maxBranchLen - depth);
-                }
-                // if false, then the check will be done for the lowest value. This is the outcome we don't want.
-                else // -1
-                {
-                    return  branchNum * (maxBranchLen - depth);
-                }
+                // if(winSymbol == playerSymbol) // +1
+                // {
+                //     return branchNum * (maxBranchLen - depth);
+                // }
+                // // if false, then the check will be done for the lowest value. This is the outcome we don't want.
+                // else // -1
+                // {
+                //     return  branchNum * (maxBranchLen - depth);
+                // }
+
+                // +1 for win, -1 for lose.
+                // return branchNum * depth + maxBranchLen - depth + 3 * ((winSymbol == playerSymbol) ? 1 : -1);
+                if (winSymbol == playerSymbol)
+                    return maxBranchLen - depth + 10;
+                else
+                    return maxBranchLen - depth - 10;
+
             }
 
         }
@@ -240,8 +250,8 @@ public class ComputerPlayer : Player
             }
         }
 
-        // checks node.nodes.
-        if(node.nodes.Count == 0) // no node.nodes, so all spots are filled.
+        // checks node.nodes for availability.
+        if(node.nodes.Count == 0) // no nodes available, so all spots are filled.
         {
             // tie-case
             // return maxBranchLen - depth + 0; // terminal value.
@@ -250,11 +260,14 @@ public class ComputerPlayer : Player
             // +0
             // since this is a tie, it should be neutral.
             // going to be lowest check if true.
-            if (yourTurn) 
-                return branchNum * (maxBranchLen - depth / 2);
-            // going to be highest check if true.
-            else
-                return branchNum * (maxBranchLen - depth / 2);
+            // if (yourTurn)
+            //     return branchNum;
+            // // going to be highest check if true.
+            // else
+            //     return branchNum * (maxBranchLen - depth / 2);
+
+            // +0
+            return maxBranchLen - depth + 0;
         }
         else
         {
