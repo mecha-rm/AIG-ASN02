@@ -135,6 +135,24 @@ public class ComputerPlayer : Player
         return NodeHasWinner(node.boardState, symbol);
     }
 
+    // checks if a node's board is full.
+    private bool NodeHasTie(MinMaxNode node)
+    {
+        // checks for a space.
+        for(int row = 0; row < node.boardState.GetLength(0); row++) // row
+        {
+            for(int col = 0; col < node.boardState.GetLength(1); col++) // col
+            {
+                // space found, so it's not full, so return false.
+                if (node.boardState[row, col] == boardSymbol.none)
+                    return false;
+            }
+        }
+
+        // no space.
+        return true;
+    }
+
 
     // runs the node and goes through all attached branches.
     // if there are no branches a value is returned.
@@ -146,79 +164,79 @@ public class ComputerPlayer : Player
         // List<MinMaxNode> nodes = new List<MinMaxNode>();
         node.nodes = new List<MinMaxNode>(); // starts new list.
 
-        // checking for winners
-        {
-            // default value.
-            boardSymbol winSymbol = boardSymbol.none;
+        // // checking for winners
+        // {
+        //     // default value.
+        //     boardSymbol winSymbol = boardSymbol.none;
+        // 
+        //     // checks for a winner
+        //     if (NodeHasWinner(node, boardSymbol.x)) // checks for the x-winner
+        //     {
+        //         winSymbol = boardSymbol.x;
+        //     }
+        //     else if (NodeHasWinner(node, boardSymbol.o)) // checks for the o-winner
+        //     {
+        //         winSymbol = boardSymbol.o;
+        //     }
+        //     
+        //     // the board being filled is checked at the end of the function.
+        //     if(winSymbol != boardSymbol.none) // win/lose case
+        //     {
+        //         // returns terminal value result.
+        //         // favours ending the game as fast as possible.
+        //         // return branchNum + maxBranchLen - depth + ((winSymbol == playerSymbol) ? 1 : -1);
+        // 
+        //         // favours ending the game as slowly as possible.
+        //         // return branchNum + ((winSymbol == playerSymbol) ? 1 : -1); // originally 10
+        //         // return (branchNum % 10) + ((winSymbol == playerSymbol) ? 1 : -1);
+        // 
+        //         // favours sooner decisions.
+        // 
+        //         // yourTurn is currently the opposite of the game ending turn
+        //         // if(yourTurn) // going to choose the lowest
+        //         //     return maxBranchLen - depth * ((winSymbol == playerSymbol) ? 1 : -1);
+        //         // else // going to choose the highest.
+        //         //     return maxBranchLen + depth * ((winSymbol == playerSymbol) ? 1 : -1);
+        //         // return maxBranchLen - depth * ((winSymbol != playerSymbol) ? 1 : -1);
+        // 
+        //         // return maxBranchLen + depth * ((winSymbol == playerSymbol) ? 1 : -1);
+        //         // return (maxBranchLen - depth) * ((winSymbol == playerSymbol) ? 1 : -1);
+        // 
+        //         // yourTurn is currently the opposite of the row it will be checked in.
+        //         // this is because turns are changed before this check is done.
+        //         // since this is a turn based game, it will be the losing player's turn when a win is confirmed.
+        // 
+        //         // if the player wins, make this a high score that it will be chosen (check wll be for max)
+        //         // if the opponent wins, make this a high score so that it won't be chosen (check will be for min)
+        //         // if(yourTurn) // going to choose the lowest.
+        //         //     return (maxBranchLen - depth) * ((winSymbol != playerSymbol) ? 1 : -1);
+        //         // else // going to choose the highest.
+        //         //     return (maxBranchLen - depth) * ((winSymbol == playerSymbol) ? 1 : -1);
+        // 
+        //         // it's the loser's turn right now.
+        //         // if true, the check being done will be for the highest value. This is the outcome we want.
+        //         // if(winSymbol == playerSymbol) // +1
+        //         // {
+        //         //     return branchNum * (maxBranchLen - depth);
+        //         // }
+        //         // // if false, then the check will be done for the lowest value. This is the outcome we don't want.
+        //         // else // -1
+        //         // {
+        //         //     return  branchNum * (maxBranchLen - depth);
+        //         // }
+        // 
+        //         // +1 for win, -1 for lose.
+        //         // return branchNum * depth + maxBranchLen - depth + 3 * ((winSymbol == playerSymbol) ? 1 : -1);
+        //         if (winSymbol == playerSymbol)
+        //             return maxBranchLen - depth + 10;
+        //         else
+        //             return maxBranchLen - depth - 10;
+        // 
+        //     }
+        // 
+        // }
 
-            // checks for a winner
-            if (NodeHasWinner(node, boardSymbol.x)) // checks for the x-winner
-            {
-                winSymbol = boardSymbol.x;
-            }
-            else if (NodeHasWinner(node, boardSymbol.o)) // checks for the o-winner
-            {
-                winSymbol = boardSymbol.o;
-            }
-            
-            // the board being filled is checked at the end of the function.
-            if(winSymbol != boardSymbol.none) // win/lose case
-            {
-                // returns terminal value result.
-                // favours ending the game as fast as possible.
-                // return branchNum + maxBranchLen - depth + ((winSymbol == playerSymbol) ? 1 : -1);
-
-                // favours ending the game as slowly as possible.
-                // return branchNum + ((winSymbol == playerSymbol) ? 1 : -1); // originally 10
-                // return (branchNum % 10) + ((winSymbol == playerSymbol) ? 1 : -1);
-
-                // favours sooner decisions.
-
-                // yourTurn is currently the opposite of the game ending turn
-                // if(yourTurn) // going to choose the lowest
-                //     return maxBranchLen - depth * ((winSymbol == playerSymbol) ? 1 : -1);
-                // else // going to choose the highest.
-                //     return maxBranchLen + depth * ((winSymbol == playerSymbol) ? 1 : -1);
-                // return maxBranchLen - depth * ((winSymbol != playerSymbol) ? 1 : -1);
-
-                // return maxBranchLen + depth * ((winSymbol == playerSymbol) ? 1 : -1);
-                // return (maxBranchLen - depth) * ((winSymbol == playerSymbol) ? 1 : -1);
-
-                // yourTurn is currently the opposite of the row it will be checked in.
-                // this is because turns are changed before this check is done.
-                // since this is a turn based game, it will be the losing player's turn when a win is confirmed.
-
-                // if the player wins, make this a high score that it will be chosen (check wll be for max)
-                // if the opponent wins, make this a high score so that it won't be chosen (check will be for min)
-                // if(yourTurn) // going to choose the lowest.
-                //     return (maxBranchLen - depth) * ((winSymbol != playerSymbol) ? 1 : -1);
-                // else // going to choose the highest.
-                //     return (maxBranchLen - depth) * ((winSymbol == playerSymbol) ? 1 : -1);
-
-                // it's the loser's turn right now.
-                // if true, the check being done will be for the highest value. This is the outcome we want.
-                // if(winSymbol == playerSymbol) // +1
-                // {
-                //     return branchNum * (maxBranchLen - depth);
-                // }
-                // // if false, then the check will be done for the lowest value. This is the outcome we don't want.
-                // else // -1
-                // {
-                //     return  branchNum * (maxBranchLen - depth);
-                // }
-
-                // +1 for win, -1 for lose.
-                // return branchNum * depth + maxBranchLen - depth + 3 * ((winSymbol == playerSymbol) ? 1 : -1);
-                if (winSymbol == playerSymbol)
-                    return maxBranchLen - depth + 10;
-                else
-                    return maxBranchLen - depth - 10;
-
-            }
-
-        }
-
-        // goes through all indexes to get all possible next modes.
+        // goes through all indexes to get all possible next nodes.
         for (int row = 0; row < node.boardState.GetLength(0); row++) // goes through each row
         {
             for(int col = 0; col < node.boardState.GetLength(1); col++) // goes through each column
@@ -238,10 +256,10 @@ public class ComputerPlayer : Player
                     else // it's the opponent's turn.
                     {
                         // opposite symbol to the one this player uses.
-                        symbol = (playerSymbol == boardSymbol.x) ? boardSymbol.x : boardSymbol.o;
+                        symbol = (playerSymbol == boardSymbol.x) ? boardSymbol.o : boardSymbol.x;
                     }
 
-                    // slot in the symbol.
+                    // slots in the symbol.
                     newNode.boardState[row, col] = symbol;
 
                     // adds the new node to the list.
@@ -250,42 +268,94 @@ public class ComputerPlayer : Player
             }
         }
 
-        // checks node.nodes for availability.
+        // for checking game ends, the program assumes rounds end as fast as possible.
+        // as such, outcomes farther down the branches have lower ratings.
+
+        // checks if there are spaces available in the boards.
+        // if no nodes were made, that means there was no space to put them.
+        // if there are no spaces available, then that means it's a tie game (winning cases are checked on an earlier iteration).
         if(node.nodes.Count == 0) // no nodes available, so all spots are filled.
         {
-            // tie-case
-            // return maxBranchLen - depth + 0; // terminal value.
-            // return (branchNum % 10) + depth + 0; // terminal value.
-
-            // +0
-            // since this is a tie, it should be neutral.
-            // going to be lowest check if true.
-            // if (yourTurn)
-            //     return branchNum;
-            // // going to be highest check if true.
-            // else
-            //     return branchNum * (maxBranchLen - depth / 2);
-
-            // +0
             return maxBranchLen - depth + 0;
         }
         else
         {
-            // goes through each node to update the scores.
+            // checks if there is a winning or tieing node.
             for(int i = 0; i < node.nodes.Count; i++)
             {
-                // needed to set it up this way since it won't allow the score to change otherwise.
-                MinMaxNode temp = node.nodes[i]; // get node.
+                // checks if the game is over.
+                bool end = false;
 
-                // grabs the result from running the node.
-                // the branch number is the current branch number times 10, plus the node index plus 1.
-                int result = RunNode(node.nodes[i], depth + 1, branchNum * 10 + i + 1, !yourTurn);
-                
-                temp.score = result; // sets the score.
-                node.nodes[i] = temp; // replace item in list.
+                // WIN CHECK //
+                // checks if this node has a game ending combination.
+                // x wins
+                end = NodeHasWinner(node.nodes[i], boardSymbol.x);
+
+                // o wins
+                if (end == false)
+                    end = NodeHasWinner(node.nodes[i], boardSymbol.o);
+
+                // checkes winning case (someone has won).
+                // this outcome should either be sought after or avoided immediately.
+                if (end)
+                {
+                    // the game ends on the turn of the user that either won or tied.
+                    // if it's your turn, then you won.
+                    if (yourTurn)
+                    {
+                        return maxBranchLen - depth + 10;
+                    }
+                    else // if it's not your turn, then that means it was a tie.
+                    {
+                        return maxBranchLen - depth - 10;
+                    }
+                }
+
+                // TIE CHECK //
+                // TODO: remove this. It is not needed.
+                // checks tie case - board filled (not needed?)
+                if (end == false)
+                {
+                    end = NodeHasTie(node.nodes[i]);
+
+                    // the game has tied.
+                    if(end)
+                    {
+                        return maxBranchLen - depth + 0;
+                    }
+                }
+
+                // gets the node (only used if no one has won).
+                // TODO: may not need to copy the node? Save it instead.
+                // MinMaxNode currNode = new MinMaxNode(node.nodes[i]); // copies the node at its current state.
+                // need this variable since it can't be edited otherwise.
+                MinMaxNode currNode = node.nodes[i];
+
+                // runs the branches attached to this node, and grabs the result.
+                // also provides the number of the branch.
+                int result = RunNode(node.nodes[i], depth + 1, branchNum + i + 1, !yourTurn);
+
+                currNode.score = result; // replaces old score with new score.
+                node.nodes[i] = currNode; // replaces item in the list.
             }
 
-            // the value that will be returned. 
+
+            // TODO: remove
+            // // goes through each node to update the scores.
+            // for(int i = 0; i < node.nodes.Count; i++)
+            // {
+            //     // needed to set it up this way since it won't allow the score to change otherwise.
+            //     MinMaxNode temp = node.nodes[i]; // get node.
+            // 
+            //     // grabs the result from running the node.
+            //     // the branch number is the current branch number times 10, plus the node index plus 1.
+            //     int result = RunNode(node.nodes[i], depth + 1, branchNum * 10 + i + 1, !yourTurn);
+            //     
+            //     temp.score = result; // sets the score.
+            //     node.nodes[i] = temp; // replace item in list.
+            // }
+
+            // checks for the score to keep, which will be stored in this variable. 
             int score = node.nodes[0].score; // grabs first score.
 
             // goes through each node again to find score.
