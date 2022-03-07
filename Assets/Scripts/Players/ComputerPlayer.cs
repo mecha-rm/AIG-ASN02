@@ -303,11 +303,13 @@ public class ComputerPlayer : Player
                     // if it's your turn, then you won.
                     if (yourTurn)
                     {
-                        return maxBranchLen - depth + 10;
+                        // the sooner the value, the higher it should be.
+                        return maxBranchLen - depth + 20;
                     }
                     else // if it's not your turn, then that means it was a tie.
                     {
-                        return maxBranchLen - depth - 10;
+                        // the sooner the value, the lower it should be.
+                        return depth - maxBranchLen - 20;
                     }
                 }
 
@@ -329,7 +331,7 @@ public class ComputerPlayer : Player
                 // TODO: may not need to copy the node? Save it instead.
                 // MinMaxNode currNode = new MinMaxNode(node.nodes[i]); // copies the node at its current state.
                 // need this variable since it can't be edited otherwise.
-                MinMaxNode currNode = node.nodes[i];
+                MinMaxNode currNode = new MinMaxNode(node.nodes[i]);
 
                 // runs the branches attached to this node, and grabs the result.
                 // also provides the number of the branch.
@@ -402,10 +404,10 @@ public class ComputerPlayer : Player
         List<Vector2Int> openIndexes = new List<Vector2Int>();
 
         // the base score nodes are compared to.
-        int baseScore = 0;
+        // int baseScore = 0;
 
         // the chosen spot for the player.
-        int nodeIndex = -1;
+        // int nodeIndex = -1;
 
         // the branch number.
         int branchNum = 0;
@@ -438,6 +440,19 @@ public class ComputerPlayer : Player
                     // slot in the symbol for this player's turn.
                     newNode.boardState[row, col] = symbol;
 
+                    // check for wins and losses
+                    if(NodeHasWinner(newNode, symbol) || NodeHasTie(newNode)) // if this is a winner or a tie.
+                    {
+                        // it's your turn, so this must be a winning node.
+                        rootNode.nodes.Clear(); // only one node is needed.
+                        rootNode.nodes.Add(newNode);
+
+                        openIndexes.Clear(); // only one node is needed.
+                        openIndexes.Add(new Vector2Int(row, col));
+                        goto SKIP;
+                    }
+
+
                     // calls the function to follow the branch through.
                     branchNum++; // increase branch number, which is [1, 9]
                     newNode.score = RunNode(newNode, 1, branchNum, false); // going into level 1
@@ -449,16 +464,19 @@ public class ComputerPlayer : Player
             }
         }
 
+        // skips out on the rest of the checks since this is a winning or tieing combination.
+        SKIP:
+
         // saves the list of rootNode.nodes.
         // this doesn't really serve a purpose.
         // rootNode.rootNode.nodes = rootNode.nodes;
 
-        // gets best score.
+        // the available nodes to choose from.
         if(rootNode.nodes.Count > 0)
         {
-            // grabs 0 index for initial score at the start.
-            nodeIndex = 0;
-            baseScore = rootNode.nodes[nodeIndex].score;
+            // best score is considered hte first one to start off.
+            int nodeIndex = -1;
+            int bestScore = rootNode.nodes[0].score;
 
             // list of best options.
             // if there's more than 1 best option, a random one is chosen.
@@ -467,41 +485,63 @@ public class ComputerPlayer : Player
             // goes through each index.
             for (int i = 0; i < rootNode.nodes.Count; i++)
             {
-                if(rootNode.nodes[i].score > baseScore) // higher score found.
+                // checks score.
+                if(rootNode.nodes[i].score >= bestScore) // higher score found.
                 {
-                    nodeIndex = i; // saves the index.
-                    baseScore = rootNode.nodes[i].score; // grab score.
-                    
-                    // new best option found, so clear out list.
-                    indexBestOptions.Clear();
+                    // nodeIndex = i; // saves the index.
+                    // baseScore = rootNode.nodes[i].score; // grab score.
+                    // 
+                    // // new best option found, so clear out list.
+                    // indexBestOptions.Clear();
+                    // 
+                    // // adds the new best option.
+                    // indexBestOptions.Add(nodeIndex);
+
+                    // new high score found, so clear out the old ones.
+                    if(rootNode.nodes[i].score > bestScore)
+                        indexBestOptions.Clear();
+
+                    // new best score.
+                    bestScore = rootNode.nodes[i].score;
 
                     // adds the new best option.
-                    indexBestOptions.Add(nodeIndex);
+                    indexBestOptions.Add(i); // save index
                 }
-                else if(rootNode.nodes[i].score == baseScore) // value found.
-                {
-                    nodeIndex = i; // saves the index.
-                    indexBestOptions.Add(nodeIndex); // add to list.
-                }
+                
             }
 
+            // TODO: organize this better.
             // more than one best option, so choose a random spot.
-            if (indexBestOptions.Count > 1)
-                nodeIndex = indexBestOptions[Random.Range(0, indexBestOptions.Count)];
-            else
-                nodeIndex = 0;
-        }
+            if (indexBestOptions.Count > 1) // multiple options.
+                nodeIndex = Random.Range(0, indexBestOptions.Count);
 
-        // returning a value.
-        if(nodeIndex >= 0 && nodeIndex < openIndexes.Count) // node index found.
-        {
-            // returns the section in the board.
-            return board.boardArray[openIndexes[nodeIndex].x, openIndexes[nodeIndex].y];
+            else if (indexBestOptions.Count == 0) // no options.
+                return null;
+
+            else // only one option.
+                nodeIndex = 0;
+
+            // grabs and returns the board index.
+            BoardIndex bi = board.boardArray[openIndexes[indexBestOptions[nodeIndex]].x, openIndexes[indexBestOptions[nodeIndex]].y];
+            return bi;
         }
-        else // no selection.
+        else
         {
+            // no nodes to choose from.
             return null;
         }
+
+        // moved.
+        // // returning a value.
+        // if(nodeIndex >= 0 && nodeIndex < openIndexes.Count) // node index found.
+        // {
+        //     // returns the section in the board.
+        //     return board.boardArray[openIndexes[nodeIndex].x, openIndexes[nodeIndex].y];
+        // }
+        // else // no selection.
+        // {
+        //     return null;
+        // }
     }
 
     // SELECTION FUNCTION //
