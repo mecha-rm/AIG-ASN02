@@ -66,7 +66,10 @@ public class GameplayManager : MonoBehaviour
     [Header("Other UI")]
     // toggle for muting the audio.
     public Toggle muteToggle;
-    
+
+    // placeholder text for the status element.
+    public Text statusPlaceholderText;
+
     // win text for the player.
     public Text playerWinText;
 
@@ -204,7 +207,7 @@ public class GameplayManager : MonoBehaviour
         if (p1StartsToggle != null)
         {
             p1Turn = p1StartsToggle.isOn;
-            p1StartsToggle.interactable = false;
+            // p1StartsToggle.interactable = false; // can now be switched in-betwee
         }
         else
         {
@@ -220,6 +223,10 @@ public class GameplayManager : MonoBehaviour
             if (p1SymbolToggleCover != null)
                 p1SymbolToggleCover.SetActive(!p1SymbolToggle.interactable);
         }
+
+        // shows status text placeholder
+        if (statusPlaceholderText != null)
+            statusPlaceholderText.gameObject.SetActive(true);
 
         // hides the player win text.
         if (playerWinText != null)
@@ -264,8 +271,8 @@ public class GameplayManager : MonoBehaviour
             
 
         // enables toggle for who goes first.
-        if (p1StartsToggle != null)
-            p1StartsToggle.interactable = true;
+        // if (p1StartsToggle != null)
+        //     p1StartsToggle.interactable = true;
 
         // updates the display.
         UpdateDisplay();
@@ -279,7 +286,7 @@ public class GameplayManager : MonoBehaviour
     public void OnWin(bool p1Won)
     {
         // shows which person wins.
-        Debug.Log((p1Won) ? "P1 Wins." : "P2 Wins");
+        // Debug.Log((p1Won) ? "P1 Wins." : "P2/Computer Wins.");
 
         // updates win count.
         if (p1Won)
@@ -288,11 +295,12 @@ public class GameplayManager : MonoBehaviour
             p2Wins++;
 
         // if the player win text 
-        if(playerWinText != null && tieText != null)
+        if(statusPlaceholderText != null && playerWinText != null && tieText != null)
         {
             playerWinText.text = (p1Won) ? "Player 1 Wins!" : "Player 2 Wins!";
 
             // show proper text.
+            statusPlaceholderText.gameObject.SetActive(false);
             playerWinText.gameObject.SetActive(true);
             tieText.gameObject.SetActive(false);
         }
@@ -309,11 +317,12 @@ public class GameplayManager : MonoBehaviour
     public void OnTie()
     {
         // message to show tie.
-        Debug.Log("Tie.");
+        // Debug.Log("Tie.");
 
         // if the player win text 
-        if (playerWinText != null && tieText != null)
+        if (statusPlaceholderText != null && playerWinText != null && tieText != null)
         {
+            statusPlaceholderText.gameObject.SetActive(false);
             playerWinText.gameObject.SetActive(false);
             tieText.gameObject.SetActive(true);
         }

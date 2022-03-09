@@ -164,78 +164,6 @@ public class ComputerPlayer : Player
         // List<MinMaxNode> nodes = new List<MinMaxNode>();
         node.nodes = new List<MinMaxNode>(); // starts new list.
 
-        // // checking for winners
-        // {
-        //     // default value.
-        //     boardSymbol winSymbol = boardSymbol.none;
-        // 
-        //     // checks for a winner
-        //     if (NodeHasWinner(node, boardSymbol.x)) // checks for the x-winner
-        //     {
-        //         winSymbol = boardSymbol.x;
-        //     }
-        //     else if (NodeHasWinner(node, boardSymbol.o)) // checks for the o-winner
-        //     {
-        //         winSymbol = boardSymbol.o;
-        //     }
-        //     
-        //     // the board being filled is checked at the end of the function.
-        //     if(winSymbol != boardSymbol.none) // win/lose case
-        //     {
-        //         // returns terminal value result.
-        //         // favours ending the game as fast as possible.
-        //         // return branchNum + maxBranchLen - depth + ((winSymbol == playerSymbol) ? 1 : -1);
-        // 
-        //         // favours ending the game as slowly as possible.
-        //         // return branchNum + ((winSymbol == playerSymbol) ? 1 : -1); // originally 10
-        //         // return (branchNum % 10) + ((winSymbol == playerSymbol) ? 1 : -1);
-        // 
-        //         // favours sooner decisions.
-        // 
-        //         // yourTurn is currently the opposite of the game ending turn
-        //         // if(yourTurn) // going to choose the lowest
-        //         //     return maxBranchLen - depth * ((winSymbol == playerSymbol) ? 1 : -1);
-        //         // else // going to choose the highest.
-        //         //     return maxBranchLen + depth * ((winSymbol == playerSymbol) ? 1 : -1);
-        //         // return maxBranchLen - depth * ((winSymbol != playerSymbol) ? 1 : -1);
-        // 
-        //         // return maxBranchLen + depth * ((winSymbol == playerSymbol) ? 1 : -1);
-        //         // return (maxBranchLen - depth) * ((winSymbol == playerSymbol) ? 1 : -1);
-        // 
-        //         // yourTurn is currently the opposite of the row it will be checked in.
-        //         // this is because turns are changed before this check is done.
-        //         // since this is a turn based game, it will be the losing player's turn when a win is confirmed.
-        // 
-        //         // if the player wins, make this a high score that it will be chosen (check wll be for max)
-        //         // if the opponent wins, make this a high score so that it won't be chosen (check will be for min)
-        //         // if(yourTurn) // going to choose the lowest.
-        //         //     return (maxBranchLen - depth) * ((winSymbol != playerSymbol) ? 1 : -1);
-        //         // else // going to choose the highest.
-        //         //     return (maxBranchLen - depth) * ((winSymbol == playerSymbol) ? 1 : -1);
-        // 
-        //         // it's the loser's turn right now.
-        //         // if true, the check being done will be for the highest value. This is the outcome we want.
-        //         // if(winSymbol == playerSymbol) // +1
-        //         // {
-        //         //     return branchNum * (maxBranchLen - depth);
-        //         // }
-        //         // // if false, then the check will be done for the lowest value. This is the outcome we don't want.
-        //         // else // -1
-        //         // {
-        //         //     return  branchNum * (maxBranchLen - depth);
-        //         // }
-        // 
-        //         // +1 for win, -1 for lose.
-        //         // return branchNum * depth + maxBranchLen - depth + 3 * ((winSymbol == playerSymbol) ? 1 : -1);
-        //         if (winSymbol == playerSymbol)
-        //             return maxBranchLen - depth + 10;
-        //         else
-        //             return maxBranchLen - depth - 10;
-        // 
-        //     }
-        // 
-        // }
-
         // goes through all indexes to get all possible next nodes.
         for (int row = 0; row < node.boardState.GetLength(0); row++) // goes through each row
         {
@@ -297,65 +225,56 @@ public class ComputerPlayer : Player
 
                 // checkes winning case (someone has won).
                 // this outcome should either be sought after or avoided immediately.
-                if (end)
+                if (end == true)
                 {
+                    // the absolute value being added or subtracted needs to be 10 or more.
+                    // I just made it 100 so that it's easy to read.
+
                     // the game ends on the turn of the user that either won or tied.
                     // if it's your turn, then you won.
                     if (yourTurn)
                     {
                         // the sooner the value, the higher it should be.
-                        return maxBranchLen - depth + 20;
+                        return maxBranchLen - depth + 100;
                     }
                     else // if it's not your turn, then that means it was a tie.
                     {
                         // the sooner the value, the lower it should be.
-                        return depth - maxBranchLen - 20;
+                        return depth - maxBranchLen - 100;
                     }
                 }
 
                 // TIE CHECK //
-                // TODO: remove this. It is not needed.
-                // checks tie case - board filled (not needed?)
-                if (end == false)
-                {
-                    end = NodeHasTie(node.nodes[i]);
+                // checks if the board ended in a tie.
+                // this isn't used because the check for attached nodes earlier already covers this.
+                // if there are no attached nodes then that means the board has ended in a tie.
 
-                    // the game has tied.
-                    if(end)
-                    {
-                        return maxBranchLen - depth + 0;
-                    }
-                }
+                // if (end == false)
+                // {
+                //     end = NodeHasTie(node.nodes[i]);
+                // 
+                //     // the game has tied.
+                //     if(end)
+                //     {
+                //         return maxBranchLen - depth + 0;
+                //     }
+                // }
 
-                // gets the node (only used if no one has won).
-                // TODO: may not need to copy the node? Save it instead.
-                // MinMaxNode currNode = new MinMaxNode(node.nodes[i]); // copies the node at its current state.
-                // need this variable since it can't be edited otherwise.
+                // RUN NODE//
+                // Runs the node since there are still spots available on the board.
+                
+                // Copies the node. This is needed because the 'score' parameter cannot be edited through accessing the list directly.
+                // A copy is made to perserve the data so that it cannot be altered by travelling further down this branch of the tree.
                 MinMaxNode currNode = new MinMaxNode(node.nodes[i]);
 
                 // runs the branches attached to this node, and grabs the result.
-                // also provides the number of the branch.
+                // it also provides the number of the branch.
                 int result = RunNode(node.nodes[i], depth + 1, branchNum + i + 1, !yourTurn);
 
+                // changes the score to the new result, and puts the new node back into the list.
                 currNode.score = result; // replaces old score with new score.
                 node.nodes[i] = currNode; // replaces item in the list.
             }
-
-
-            // TODO: remove
-            // // goes through each node to update the scores.
-            // for(int i = 0; i < node.nodes.Count; i++)
-            // {
-            //     // needed to set it up this way since it won't allow the score to change otherwise.
-            //     MinMaxNode temp = node.nodes[i]; // get node.
-            // 
-            //     // grabs the result from running the node.
-            //     // the branch number is the current branch number times 10, plus the node index plus 1.
-            //     int result = RunNode(node.nodes[i], depth + 1, branchNum * 10 + i + 1, !yourTurn);
-            //     
-            //     temp.score = result; // sets the score.
-            //     node.nodes[i] = temp; // replace item in list.
-            // }
 
             // checks for the score to keep, which will be stored in this variable. 
             int score = node.nodes[0].score; // grabs first score.
@@ -365,21 +284,13 @@ public class ComputerPlayer : Player
             {
                 if(yourTurn) // it's the computer player's turn (find max)
                 {
-                    // max
+                    // max - finds largest score.
                     score = Mathf.Max(node.nodes[i].score, score);
-
-                    // // larger score found.
-                    // if (node.nodes[i].score > score)
-                    //     score = node.nodes[i].score;
                 }
                 else // it's the opponent's turn (find min)
                 {
-                    // min
+                    // min - finds smallest score.
                     score = Mathf.Min(node.nodes[i].score, score);
-
-                    // // smaller score found.
-                    // if (node.nodes[i].score < score)
-                    //     score = node.nodes[i].score;
                 }
             }
 
@@ -389,33 +300,27 @@ public class ComputerPlayer : Player
         }
     }
 
-    // runs the AI to find a space.
+    // runs the AI to find the best space to be used.
     private BoardIndex RunMinMaxAI(Board board)
     {
-        // the root node.
+        // the root node that all branches come from.
         MinMaxNode rootNode = new MinMaxNode();
 
-        // branch nodes.
-        // List<MinMaxNode> nodes = new List<MinMaxNode>();
-        rootNode.nodes = new List<MinMaxNode>();// initialize list.
+        // initialize root node list.
+        rootNode.nodes = new List<MinMaxNode>();
 
         // the open indexes for the board. It's the same length as the nodes list.
+        // this is used for cases where multiple spots are equally as viable.
         // (x) = row, (y) = column.
         List<Vector2Int> openIndexes = new List<Vector2Int>();
 
-        // the base score nodes are compared to.
-        // int baseScore = 0;
-
-        // the chosen spot for the player.
-        // int nodeIndex = -1;
-
-        // the branch number.
+        // the branch number. (TODO: remove)
         int branchNum = 0;
 
         // generates the board.
         rootNode.boardState = board.GenerateBoardSymbolArray();
 
-        // checks all outcomes.
+        // checks all outcomes to see which is the best one.
         for (int row = 0; row < rootNode.boardState.GetLength(0); row++) // row
         {
             for (int col = 0; col < rootNode.boardState.GetLength(1); col++) // column
@@ -426,30 +331,27 @@ public class ComputerPlayer : Player
                     // makes a new node.
                     MinMaxNode newNode = new MinMaxNode(rootNode);
 
-                    // since it's the player's turn, it's a max node.
+                    // since it's the player's turn, it'll always be a max node.
+                    // as such, it just takes in the player's symbol.
                     boardSymbol symbol = playerSymbol; // player symbol.
-                    // boardSymbol symbol = boardSymbol.none; // default.
-
-                    // since it's the player's turn, the next row will be the opponent's symbol.
-                    // if (playerSymbol == boardSymbol.x) // computer uses (x) 
-                    //     symbol = boardSymbol.o;
-                    // 
-                    // if (playerSymbol == boardSymbol.o) // computer uses (o) 
-                    //     symbol = boardSymbol.x;
-
+                    
                     // slot in the symbol for this player's turn.
                     newNode.boardState[row, col] = symbol;
 
-                    // check for wins and losses
-                    if(NodeHasWinner(newNode, symbol) || NodeHasTie(newNode)) // if this is a winner or a tie.
-                    {
-                        // it's your turn, so this must be a winning node.
-                        rootNode.nodes.Clear(); // only one node is needed.
-                        rootNode.nodes.Add(newNode);
+                    // if the computer can win in one move, they will instantly choose that option.
+                    // if the game is one turn away from being a tie, the computer will instantly choose that option as well.
+                    // basically if the game can be ended in one turn where the computer either wins or gets a tie they will do it.
 
-                        openIndexes.Clear(); // only one node is needed.
-                        openIndexes.Add(new Vector2Int(row, col));
-                        goto SKIP;
+                    // checks for a win and a tie.
+                    if(NodeHasWinner(newNode, symbol) || NodeHasTie(newNode)) // if this is a win or a tie.
+                    {
+                        // it's the player's turn, so this must be a winning o
+                        rootNode.nodes.Clear(); // only one node is needed.
+                        rootNode.nodes.Add(newNode); // adds the single available node.
+
+                        openIndexes.Clear(); // only one open index.
+                        openIndexes.Add(new Vector2Int(row, col)); // give open index.
+                        goto SKIP; // skip the rest.
                     }
 
 
@@ -467,62 +369,61 @@ public class ComputerPlayer : Player
         // skips out on the rest of the checks since this is a winning or tieing combination.
         SKIP:
 
-        // saves the list of rootNode.nodes.
-        // this doesn't really serve a purpose.
-        // rootNode.rootNode.nodes = rootNode.nodes;
-
         // the available nodes to choose from.
         if(rootNode.nodes.Count > 0)
         {
-            // best score is considered hte first one to start off.
-            int nodeIndex = -1;
+            // index of the best option.
+            int bestOptionIndex = -1;
+
+            // set to the first score to start off.
             int bestScore = rootNode.nodes[0].score;
 
             // list of best options.
             // if there's more than 1 best option, a random one is chosen.
-            List<int> indexBestOptions = new List<int>();
+            List<int> bestOptions = new List<int>();
 
             // goes through each index.
             for (int i = 0; i < rootNode.nodes.Count; i++)
             {
-                // checks score.
-                if(rootNode.nodes[i].score >= bestScore) // higher score found.
+                // checks for the highest score.
+                if(rootNode.nodes[i].score >= bestScore) // same or higher score found.
                 {
-                    // nodeIndex = i; // saves the index.
-                    // baseScore = rootNode.nodes[i].score; // grab score.
-                    // 
-                    // // new best option found, so clear out list.
-                    // indexBestOptions.Clear();
-                    // 
-                    // // adds the new best option.
-                    // indexBestOptions.Add(nodeIndex);
-
-                    // new high score found, so clear out the old ones.
+                    // new high score found, so clear out the list of saved scores.
                     if(rootNode.nodes[i].score > bestScore)
-                        indexBestOptions.Clear();
+                        bestOptions.Clear();
 
-                    // new best score.
+                    // new best score (or same score).
                     bestScore = rootNode.nodes[i].score;
 
-                    // adds the new best option.
-                    indexBestOptions.Add(i); // save index
+                    // adds the new best option or one of the best options.
+                    bestOptions.Add(i); // save index
                 }
                 
             }
 
-            // TODO: organize this better.
-            // more than one best option, so choose a random spot.
-            if (indexBestOptions.Count > 1) // multiple options.
-                nodeIndex = Random.Range(0, indexBestOptions.Count);
-
-            else if (indexBestOptions.Count == 0) // no options.
+            
+            // grabs the best option from the list.
+            if (bestOptions.Count > 1) // multiple options.
+            {
+                bestOptionIndex = Random.Range(0, bestOptions.Count);
+            }
+            else if (bestOptions.Count == 0) // no options.
+            {
                 return null;
-
+            }
             else // only one option.
-                nodeIndex = 0;
+            {
+                bestOptionIndex = 0;
+            }
+                
 
             // grabs and returns the board index.
-            BoardIndex bi = board.boardArray[openIndexes[indexBestOptions[nodeIndex]].x, openIndexes[indexBestOptions[nodeIndex]].y];
+            BoardIndex bi = board.boardArray[
+                openIndexes[bestOptions[bestOptionIndex]].x, 
+                openIndexes[bestOptions[bestOptionIndex]].y
+                ];
+            
+            // return the index.
             return bi;
         }
         else
@@ -530,18 +431,6 @@ public class ComputerPlayer : Player
             // no nodes to choose from.
             return null;
         }
-
-        // moved.
-        // // returning a value.
-        // if(nodeIndex >= 0 && nodeIndex < openIndexes.Count) // node index found.
-        // {
-        //     // returns the section in the board.
-        //     return board.boardArray[openIndexes[nodeIndex].x, openIndexes[nodeIndex].y];
-        // }
-        // else // no selection.
-        // {
-        //     return null;
-        // }
     }
 
     // SELECTION FUNCTION //
@@ -552,6 +441,7 @@ public class ComputerPlayer : Player
         // gets the board.
         Board board = manager.board;
 
+        // checks how the computer should act.
         if (useAI) // if the AI should be used.
         {
             // runs the min-max AI.
@@ -570,11 +460,5 @@ public class ComputerPlayer : Player
 
         // no spots available.
         return null;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
