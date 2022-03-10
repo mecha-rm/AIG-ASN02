@@ -42,13 +42,14 @@ public class UserPlayer : Player
         // saves the clicked object. There's only one mouse.
         clickedObject = manager.mouse.heldObject;
 
-        // TODO: try to optimize this if possible.
         // checks if any key has been pressed down.
         if(Input.anyKeyDown)
         {
             // index
             BoardIndex index = null;
 
+            // getting keyboard inputs
+            // this works for both the number key row and the number key keypad.
             if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1)) // spot 1
             {
                 index = manager.board.GetBoardListIndex(0);
@@ -90,70 +91,5 @@ public class UserPlayer : Player
             if (index != null)
                 clickedObject = index.gameObject;
         }
-
-        // didn't work.
-        // // checks if the current even is a key press.
-        // if(Event.current != null)
-        // {
-        //     // if this is a key event.
-        //     if(Event.current.isKey)
-        //     {
-        //         // index
-        //         BoardIndex index = null;
-        // 
-        //         // checks for selected key.
-        //         switch (Event.current.keyCode)
-        //         {
-        //             case KeyCode.Alpha1:
-        //             case KeyCode.Keypad1: // 1
-        //                 index = manager.board.GetBoardListIndex(0);
-        //                 break;
-        // 
-        //             case KeyCode.Alpha2:
-        //             case KeyCode.Keypad2: // 2
-        //                 index = manager.board.GetBoardListIndex(1);
-        //                 break;
-        // 
-        //             case KeyCode.Alpha3:
-        //             case KeyCode.Keypad3: // 3
-        //                 index = manager.board.GetBoardListIndex(2);
-        //                 break;
-        // 
-        //             case KeyCode.Alpha4:
-        //             case KeyCode.Keypad4: // 4
-        //                 index = manager.board.GetBoardListIndex(3);
-        //                 break;
-        // 
-        //             case KeyCode.Alpha5:
-        //             case KeyCode.Keypad5: // 5
-        //                 index = manager.board.GetBoardListIndex(4);
-        //                 break;
-        // 
-        //             case KeyCode.Alpha6:
-        //             case KeyCode.Keypad6: // 6
-        //                 index = manager.board.GetBoardListIndex(5);
-        //                 break;
-        // 
-        //             case KeyCode.Alpha7:
-        //             case KeyCode.Keypad7: // 7
-        //                 index = manager.board.GetBoardListIndex(6);
-        //                 break;
-        // 
-        //             case KeyCode.Alpha8:
-        //             case KeyCode.Keypad8: // 8
-        //                 index = manager.board.GetBoardListIndex(7);
-        //                 break;
-        // 
-        //             case KeyCode.Alpha9:
-        //             case KeyCode.Keypad9: // 9
-        //                 index = manager.board.GetBoardListIndex(8);
-        //                 break;
-        //         }
-        // 
-        //         // if the index was found.
-        //         if (index != null)
-        //             clickedObject = index.gameObject;
-        //     } 
-        // }
     }
 }

@@ -36,7 +36,6 @@ public class ComputerPlayer : Player
     }
 
     // if 'true', the computer player uses its AI.
-    // TODO: change to default 'true' when A is complete.
     public bool useAI = false;
 
     // the maximum length of a branch.
@@ -175,7 +174,7 @@ public class ComputerPlayer : Player
 
     // runs the node and goes through all attached branches.
     // if there are no branches a value is returned.
-    private int RunNode(MinMaxNode node, int depth, int branchNum, bool yourTurn)
+    private int RunNode(MinMaxNode node, int depth, bool yourTurn)
     {
         // Debug.Log("Depth: " + depth);
 
@@ -282,7 +281,7 @@ public class ComputerPlayer : Player
 
                 // runs the branches attached to this node, and grabs the result.
                 // it also provides the number of the branch.
-                int result = RunNode(node.nodes[i], depth + 1, branchNum + i + 1, !yourTurn);
+                int result = RunNode(node.nodes[i], depth + 1, !yourTurn);
 
                 // changes the score to the new result, and puts the new node back into the list.
                 currNode.score = result; // replaces old score with new score.
@@ -327,9 +326,6 @@ public class ComputerPlayer : Player
         // (x) = row, (y) = column.
         List<Vector2Int> openIndexes = new List<Vector2Int>();
 
-        // the branch number. (TODO: remove)
-        int branchNum = 0;
-
         // generates the board.
         rootNode.boardState = board.GenerateBoardSymbolArray();
 
@@ -369,8 +365,7 @@ public class ComputerPlayer : Player
 
 
                     // calls the function to follow the branch through.
-                    branchNum++; // increase branch number, which is [1, 9]
-                    newNode.score = RunNode(newNode, 1, branchNum, false); // going into level 1
+                    newNode.score = RunNode(newNode, 1, false); // going into level 1
 
                     // adds the new node and index to the lists.
                     rootNode.nodes.Add(newNode);

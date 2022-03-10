@@ -72,9 +72,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indexSymbol: 0
-  sprite: {fileID: 0}
-  xSprite: {fileID: 0}
-  oSprite: {fileID: 0}
+  sprite: {fileID: 5672641503377903738}
+  defaultSprite: {fileID: 0}
+  xSprite: {fileID: 21300000, guid: 73e1eed9fe9cdaa4891cc9fd12000920, type: 3}
+  oSprite: {fileID: 21300000, guid: 24b01cf622ba9a54289fd11f99870aec, type: 3}
 --- !u!1 &5672641503377903740
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,20 +8,24 @@ public enum boardSymbol { none = 0, x = 1, o = 2 }
 // spot in the board.
 public class BoardIndex : MonoBehaviour
 {
-    // the symbol in this board index.
-    // TODO: change permissions level.
+    // the symbol in this board index. Use the SetIndexSymbol() function to change both the symbol and its sprite.
+    [Tooltip("The index symbol for this board index. Use the SetIndexSymbol() function to change the sprite and this variable.")]
     public boardSymbol indexSymbol = boardSymbol.none;
 
     // the sprite for the index.
+    [Tooltip("The sprite renderer for this board index.")]
     public SpriteRenderer sprite;
 
     // the default sprite.
+    [Tooltip("The default sprite used for this board index.")]
     public Sprite defaultSprite;
 
     // the x-sprite
+    [Tooltip("The sprite for the (X) symbol.")]
     public Sprite xSprite;
 
     // the o-sprite
+    [Tooltip("The sprite for the (O) symbol.")]
     public Sprite oSprite;
 
     // Start is called before the first frame update
@@ -43,8 +47,14 @@ public class BoardIndex : MonoBehaviour
             defaultSprite = sprite.sprite;
     }
 
+    // gets the board symbol.
+    public boardSymbol GetIndexSymbol()
+    {
+        return indexSymbol;
+    }
+
     // gets the symbol as an integer.
-    public int GetIndexSymbol()
+    public int GetIndexSymbolAsInt()
     {
         return (int)indexSymbol;
     }
@@ -72,7 +82,7 @@ public class BoardIndex : MonoBehaviour
     // sets the symbol
     public void SetIndexSymbol(int newSymbol)
     {
-        indexSymbol = (boardSymbol)newSymbol;
+        SetIndexSymbol((boardSymbol)newSymbol);
     }
 
     // checks if the board index is available.

@@ -1,11 +1,10 @@
 # AIG-ASN02
-Assignment 2 for the artificial intelligence course, which is to make Tic-Tac-Toe.
+Assignment 2 for the artificial intelligence course, which is to make Tic-Tac-Toe wth an A.I. that uses a minmax tree.
 
 = AUDIO CREDITS =
 Listed below are the imported audio assets for the game, which are copyright free.
 All unlisted audio components were made by the author of the game, and thus are not credited.
-Not all audio components may end up being used, but all included copyright-free audio is still cited.
-All sourced audio comes GameSounds.xyz (https://gamesounds.xyz/).
+All sourced audio comes from GameSounds.xyz (https://gamesounds.xyz/).
 
 == Background Music ==
 Background music for the game.
@@ -23,7 +22,7 @@ File Link: https://gamesounds.xyz/Music%20-%20Ross%20Bugden/Ross%20Bugden%20-%20
 
 === Rules ===
 File: bgm_rules.mp3
-Description: Song for setting the rules of tic-tac-toe before the first round.
+Description: Song for setting the rules of Tic-Tac-Toe before the first round.
 
 Title: Acapulco Shore
 Artist: Anttis Instrumentals

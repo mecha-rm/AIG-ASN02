@@ -360,7 +360,11 @@ public class GameplayManager : MonoBehaviour
     public void ClearData()
     {
         // resets the values
-        round = 0;
+        // if the game is running, set it to round 1.
+        // if it's not running, set it to 0.
+        round = (running) ? 1 : 0;
+
+        // wins and ties
         p1Wins = 0;
         p2Wins = 0;
         ties = 0;
@@ -386,8 +390,11 @@ public class GameplayManager : MonoBehaviour
         // checks to see if the game is running
         if(running)
         {
+            // index of the player's chosen board place.
             BoardIndex index = null;
-            index = (p1Turn) ? p1.GetChosenIndex() : p2.GetChosenIndex(); // TODO: change players.
+
+            // gets current player's index.
+            index = (p1Turn) ? p1.GetChosenIndex() : p2.GetChosenIndex();
 
             // tries to get the door component from the object.
             if (index != null)
