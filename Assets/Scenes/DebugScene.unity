@@ -249,9 +249,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84c65e02bb933804596842b3111fcc60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mouseKey: 323
   mouseWorldPosition: {x: 0, y: 0, z: 0}
   hoveredObject: {fileID: 0}
-  clickedObject: {fileID: 0}
+  heldObject: {fileID: 0}
+  lastClickedObject: {fileID: 0}
 --- !u!1 &1435141747
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +266,7 @@ GameObject:
   - component: {fileID: 1435141748}
   - component: {fileID: 1435141750}
   m_Layer: 0
-  m_Name: Test Sprite
+  m_Name: Test Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
