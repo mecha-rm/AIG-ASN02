@@ -33,14 +33,6 @@ public class ComputerPlayer : Player
 
             // nodes = copy.nodes.CopyTo(;
         }
-
-        // // initializes score, boardState, and nodes.
-        // public MinMaxNode(int score, boardSymbol[,] boardState, List<MinMaxNode> nodes)
-        // {
-        //     this.score = score;
-        //     this.boardState = boardState;
-        //     this.nodes = nodes;
-        // }
     }
 
     // if 'true', the computer player uses its AI.
@@ -49,6 +41,10 @@ public class ComputerPlayer : Player
 
     // the maximum length of a branch.
     private const int maxBranchLen = 9;
+
+    // the maximum depth that the computer can descend down the tree.
+    // if set to 0 or less it will be able to form a complete game tree.
+    public int maxDepth = -1;
 
     // Start is called before the first frame update
     protected new void Start()
@@ -153,6 +149,29 @@ public class ComputerPlayer : Player
         return true;
     }
 
+    // outcome: the outcome of the board.
+    //  * >=  1: player (computer) wins
+    //  * ==  0: tie
+    //  * <= -1: opponent wins
+    public int GetNodeScore(int outcome, int depth)
+    {
+        // as long as the number is 10 or greater its fine.
+        if(outcome > 0) // player (computer) wins
+        {
+            // the sooner the value, the higher it should be.
+            return maxBranchLen - depth + 100;
+        }
+        else if(outcome < 0) // opponent wins
+        {
+            // the sooner the value, the lower it should be.
+            return depth - maxBranchLen - 100;
+        }
+        else // tie
+        {
+            return maxBranchLen - depth + 0;
+        }
+    }
+
 
     // runs the node and goes through all attached branches.
     // if there are no branches a value is returned.
@@ -204,7 +223,7 @@ public class ComputerPlayer : Player
         // if there are no spaces available, then that means it's a tie game (winning cases are checked on an earlier iteration).
         if(node.nodes.Count == 0) // no nodes available, so all spots are filled.
         {
-            return maxBranchLen - depth + 0;
+            return GetNodeScore(0, depth);
         }
         else
         {
@@ -227,38 +246,32 @@ public class ComputerPlayer : Player
                 // this outcome should either be sought after or avoided immediately.
                 if (end == true)
                 {
-                    // the absolute value being added or subtracted needs to be 10 or more.
-                    // I just made it 100 so that it's easy to read.
-
                     // the game ends on the turn of the user that either won or tied.
-                    // if it's your turn, then you won.
-                    if (yourTurn)
-                    {
-                        // the sooner the value, the higher it should be.
-                        return maxBranchLen - depth + 100;
-                    }
-                    else // if it's not your turn, then that means it was a tie.
-                    {
-                        // the sooner the value, the lower it should be.
-                        return depth - maxBranchLen - 100;
-                    }
+                    // if 'yourTurn' is true then the player (computer) won.
+                    // if 'yourTurn' is false then the opponent won.
+                    return GetNodeScore((yourTurn ? 1 : -1), depth);
                 }
 
-                // TIE CHECK //
-                // checks if the board ended in a tie.
+                // TIE CHECK and EARLY END //
+                // checks if the board ended in a tie. Also checks if 
                 // this isn't used because the check for attached nodes earlier already covers this.
                 // if there are no attached nodes then that means the board has ended in a tie.
+                if (end == false)
+                {
+                    end = NodeHasTie(node.nodes[i]);
 
-                // if (end == false)
-                // {
-                //     end = NodeHasTie(node.nodes[i]);
-                // 
-                //     // the game has tied.
-                //     if(end)
-                //     {
-                //         return maxBranchLen - depth + 0;
-                //     }
-                // }
+                    // checks if the max depth has been reached.
+                    // if maxDepth is 0 or less then there is no max depth.
+                    // if max depth has been reached this node returns as a tie.
+                    if (end == false)
+                        end = (maxDepth > 0 && depth >= maxDepth);
+
+                    // the game has tied.
+                    if(end)
+                    {
+                        return GetNodeScore(0, depth);
+                    }
+                }
 
                 // RUN NODE//
                 // Runs the node since there are still spots available on the board.

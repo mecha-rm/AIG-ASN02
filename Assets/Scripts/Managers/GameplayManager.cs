@@ -56,11 +56,22 @@ public class GameplayManager : MonoBehaviour
     public int p1Wins = 0;
     public int p2Wins = 0;
 
+    // amount of ties.
+    public int ties = 0;
+
     // Statistics UI components.
     [Header("Statistics/UI")]
+    // amount of rounds.
     public Text roundText;
+
+    // win count for player 1.
     public Text p1WinCountText;
+
+    // win count for player 2.
     public Text p2WinCountText;
+
+    // the amount of ties.
+    public Text tieCountText;
 
     // Other UI components.
     [Header("Other UI")]
@@ -167,6 +178,13 @@ public class GameplayManager : MonoBehaviour
         // display p2 wins in text.
         if (p2WinCountText != null)
             p2WinCountText.text = "Player 2 Wins: " + p2Wins.ToString("D3");
+
+        // display tie amount in text.
+        // since round has been incremented a (-1) is added.
+        if (tieCountText != null)
+        {
+            tieCountText.text = "Ties: " + ties.ToString("D3");
+        }            
 
         // hides the board cover.
         if (boardCover != null)
@@ -319,6 +337,9 @@ public class GameplayManager : MonoBehaviour
         // message to show tie.
         // Debug.Log("Tie.");
 
+        // increases the amount of ties.
+        ties++;
+
         // if the player win text 
         if (statusPlaceholderText != null && playerWinText != null && tieText != null)
         {
@@ -338,9 +359,11 @@ public class GameplayManager : MonoBehaviour
     // clears out the data
     public void ClearData()
     {
+        // resets the values
         round = 0;
         p1Wins = 0;
         p2Wins = 0;
+        ties = 0;
 
         UpdateDisplay();
     }
