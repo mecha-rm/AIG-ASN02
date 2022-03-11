@@ -1637,6 +1637,7 @@ MonoBehaviour:
   playerSymbol: 0
   manager: {fileID: 958575304}
   useAI: 1
+  printDecisionTime: 0
   maxDepth: 5
 --- !u!1 &686824207
 GameObject:

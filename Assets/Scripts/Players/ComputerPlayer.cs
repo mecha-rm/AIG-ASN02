@@ -20,23 +20,23 @@ public class ComputerPlayer : Player
         // copy constructor
         public MinMaxNode(MinMaxNode copy)
         {
+            // copies the score.
             score = copy.score;
-
-            // pass-by reference
-            // boardState = copy.boardState;
 
             // copies the contents.
             boardState = copy.boardState.Clone() as boardSymbol[,];
 
             // copies the attached nodes.
             nodes = new List<MinMaxNode>(copy.nodes);
-
-            // nodes = copy.nodes.CopyTo(;
         }
     }
 
     // if 'true', the computer player uses its AI.
     public bool useAI = false;
+
+    // if 'true' the computer's time to make a decision is printed in terms of ticks.
+    [Tooltip("Prints the the time it took for the computer to make decision if true. Time is in ticks.")]
+    public bool printDecisionTime = false;
 
     // the maximum length of a branch.
     private const int maxBranchLen = 9;
@@ -442,6 +442,20 @@ public class ComputerPlayer : Player
     }
 
     // SELECTION FUNCTION //
+    // prints the decision time message (time is in ticks).
+    private void PrintDecisionTimeMessage(long startTime, long endTime)
+    {
+        // gets the total time.
+        long totalTime = endTime - startTime;
+       
+        // forms the message.
+        string message = string.Format(
+            "Start Time: {0} | End Time: {1} | Total Decision Time: {2}",
+            startTime.ToString(), endTime.ToString(), totalTime.ToString());
+
+        // prints the message.
+        Debug.Log(message);
+    }
 
     // gets the chosen index from the computer player.
     public override BoardIndex GetChosenIndex()
@@ -449,20 +463,53 @@ public class ComputerPlayer : Player
         // gets the board.
         Board board = manager.board;
 
+        // the start time and end time for the computer making a board spot decision.
+        long startTime = 0, endTime = 0;
+
         // checks how the computer should act.
         if (useAI) // if the AI should be used.
         {
+            // print the decision time.
+            if(printDecisionTime)
+                startTime = System.DateTime.Now.Ticks; // start time
+
             // runs the min-max AI.
-            return RunMinMaxAI(board);
+            BoardIndex bi = RunMinMaxAI(board);
+
+            // print the decision time.
+            if (printDecisionTime)
+            {
+                endTime = System.DateTime.Now.Ticks; // end time
+                PrintDecisionTimeMessage(startTime, endTime); // message
+            }
+                
+            // return index.
+            return bi;
         }
         else // AI should not be used.
         {
+            // decision should be printed.
+            if(printDecisionTime)
+                startTime = System.DateTime.Now.Ticks; // start time.
+
+
             // goes through each index and picks the next available space.
             for (int i = 0; i < board.boardList.Count; i++)
             {
                 // the index is available.
                 if (board.boardList[i].IsAvailable())
+                {
+                    // the decision should be printed.
+                    if(printDecisionTime)
+                    {
+                        endTime = System.DateTime.Now.Ticks; // end time.
+                        PrintDecisionTimeMessage(startTime, endTime); // prints message.
+                    }
+
+
                     return board.boardList[i];
+                }
+                    
             }
         }
 
